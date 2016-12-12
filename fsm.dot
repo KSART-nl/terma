@@ -1,0 +1,45 @@
+digraph finite_state_machine {
+	rankdir=TB;
+
+	node [shape = doublecircle]; Complete, Unacceptable;
+	
+	node [shape = point]; Start;
+
+	node [shape = circle];
+	Start -> CheckUniqueness [ label = "Begin" ];
+
+	CheckUniqueness -> Orthography [ label = "IsUnique" ];
+	CheckUniqueness -> Unacceptable [ label = "NotUnique" ];
+
+	Orthography -> POSTagging [ label = "IsOrthographied" ];
+	Orthography -> Unacceptable [ label = "NotValidOrtography" ];
+
+	POSTagging -> Classification [ label = "IsPosTagged" ];
+	POSTagging -> Unacceptable [ label = "NotValidPosLabel" ];
+	POSTagging -> Classification [ label = "UnPosTagged" ];
+
+	Classification -> Flexion [ label = "IsClassifiedNaively" ];
+	Classification -> Flexion [ label = "IsClassifiedPrimitively" ];
+	Classification -> Flexion [ label = "UnClassified" ];
+
+	Flexion -> Definition [ label = "IsFlexioned" ];
+	Flexion -> Definition [ label = "UnFlexioned" ];
+
+	Definition -> Context [ label = "IsDefined" ];
+	Definition -> Context [ label = "UnDefined" ];
+
+	Context -> Kunstgehalt [ label = "IsContexted" ];
+	Context -> Kunstgehalt [ label = "UnContexted" ];
+
+	Kunstgehalt -> Content [ label = "IsKunstgehalted" ];
+	Kunstgehalt -> Content [ label = "UnKunstgehalted" ];
+
+	Content -> Associations [ label = "ReuseContented" ];
+	Content -> Associations [ label = "NewlyContented" ];
+	Content -> Associations [ label = "UnContented" ];
+
+	Associations -> Complete [ label = "IsAssociationable" ];
+	Associations -> Complete [ label = "UnAssociationable" ];
+
+	Unacceptable
+}
