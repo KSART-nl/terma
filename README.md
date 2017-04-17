@@ -2,3 +2,5 @@
 
 # terma
 Term system for collection art forms
+
+<img src="fsm.png?raw=true" width="600">
