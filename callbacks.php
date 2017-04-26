@@ -21,14 +21,15 @@ function UniquenessCallback($symbol, &$payload, $currentState, $nextState) {
 	}
 }
 function PostagCallback($symbol, &$payload, $currentState, $nextState) {
+	$payload["term"] = escapeshellcmd($payload["term"]);
 	echo "Postag transition: {$symbol} {$payload["term"]} {$currentState} {$nextState}\n";
 	$term_file_name = str_replace(" ", "_", $payload["term"]);
 	$create_term_file = "echo '".$payload["term"]."' > frogs/".$term_file_name.".txt";
 	echo $create_term_file."\n";
 	$frog_term_file = "/lamachine/etc/frog -t frogs/".$term_file_name.".txt -X frogs/".$term_file_name.".xml";
 	echo $frog_term_file."\n";
-	system(escapeshellcmd($create_term_file));
-	system(escapeshellcmd($frog_term_file));
+	system(($create_term_file));
+	system($frog_term_file);
 	if(file_exists("frogs/".$term_file_name.".xml")) {
 		$term_folia = file_get_contents("frogs/".$term_file_name.".xml");
 		echo $term_folia."\n";
