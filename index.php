@@ -12,8 +12,9 @@ require 'vendor/autoload.php';
 require 'config/database.php';
 require 'start.php';
 
-$source_terms = SourceTerm::take(100)->get();
+system('/lamachine/bin/activate');
 
+$source_terms = SourceTerm::take(100)->get();
 foreach($source_terms as $source_term) {
 
 	$stack = [
@@ -46,3 +47,4 @@ foreach($source_terms as $source_term) {
 
 }
 
+system('/lamachine/bin/deactivate');
