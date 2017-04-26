@@ -1,61 +1,48 @@
 <?php
 
+error_reporting(E_ALL);
+ini_set("display_errors", 1);
+
+//Pear library
 require 'FSM.php';
+require 'callbacks.php';
 
-$stack = [
-	"term" => "schilderen"
-];
-$fsm = new FSM('Init', $stack);
+//Eloquent requirements
+require 'vendor/autoload.php';
+require 'config/database.php';
+require 'start.php';
 
-function OrthographyCallback($symbol, &$payload, $currentState, $nextState) {
-	echo "Orthography transition: {$symbol} {$payload["term"]} {$currentState} {$nextState}\n";
-}
-function UniquenessCallback($symbol, &$payload, $currentState, $nextState) {
-	echo "Uniqueness transition: {$symbol} {$payload["term"]} {$currentState} {$nextState}\n";
-}
-function PostagCallback($symbol, &$payload, $currentState, $nextState) {
-	echo "Postag transition: {$symbol} {$payload["term"]} {$currentState} {$nextState}\n";
-}
-function ClassifyCallback($symbol, &$payload, $currentState, $nextState) {
-	echo "Classify transition: {$symbol} {$payload["term"]} {$currentState} {$nextState}\n";
-}
-function FlexionCallback($symbol, &$payload, $currentState, $nextState) {
-	echo "Flexion transition: {$symbol} {$payload["term"]} {$currentState} {$nextState}\n";
-}
-function DefinitionCallback($symbol, &$payload, $currentState, $nextState) {
-	echo "Definition transition: {$symbol} {$payload["term"]} {$currentState} {$nextState}\n";
-}
-function ContextCallback($symbol, &$payload, $currentState, $nextState) {
-	echo "Context transition: {$symbol} {$payload["term"]} {$currentState} {$nextState}\n";
-}
-function KunstgehaltCallback($symbol, &$payload, $currentState, $nextState) {
-	echo "Kunstgehalt transition: {$symbol} {$payload["term"]} {$currentState} {$nextState}\n";
-}
-function ContentCallback($symbol, &$payload, $currentState, $nextState) {
-	echo "Content transition: {$symbol} {$payload["term"]} {$currentState} {$nextState}\n";
-}
-function AssociationCallback($symbol, &$payload, $currentState, $nextState) {
-	echo "Association transition: {$symbol} {$payload["term"]} {$currentState} {$nextState}\n";
+$source_terms = SourceTerm::take(100)->get();
+
+foreach($source_terms as $source_term) {
+
+	$stack = [
+		"term"			=> $source_term->term,
+		"context"		=> $source_term->qualifier
+	];
+	$fsm = new FSM('Init', $stack);
+
+	$fsm->addTransition('OrthographyTransition', 'Init', 'Ortographyed', 'OrthographyCallback');
+	$fsm->addTransition('UniquenessTransition', 'Ortographyed', 'Uniquenessed', 'UniquenessCallback');
+	$fsm->addTransition('PostagTransition', 'Uniquenessed', 'Postagged', 'PostagCallback');
+	$fsm->addTransition('ClassifyTransition', 'Postagged', 'Classified', 'ClassifyCallback');
+	$fsm->addTransition('FlexionTransition', 'Classified', 'Flexioned', 'FlexionCallback');
+	$fsm->addTransition('DefinitionTransition', 'Flexioned', 'Definitioned', 'DefinitionCallback');
+	$fsm->addTransition('ContextTransition', 'Definitioned', 'Contexted', 'ContextCallback');
+	$fsm->addTransition('KunstgehaltTransition', 'Contexted', 'Kunstgehalted', 'KunstgehaltCallback');
+	$fsm->addTransition('ContentTransition', 'Kunstgehalted', 'Contented', 'ContentCallback');
+	$fsm->addTransition('AssociationTransition', 'Contented', 'Associationed', 'AssociationCallback');
+
+	$fsm->process('OrthographyTransition');
+	$fsm->process('UniquenessTransition');
+	$fsm->process('PostagTransition');
+	$fsm->process('ClassifyTransition');
+	$fsm->process('FlexionTransition');
+	$fsm->process('DefinitionTransition');
+	$fsm->process('ContextTransition');
+	$fsm->process('KunstgehaltTransition');
+	$fsm->process('ContentTransition');
+	$fsm->process('AssociationTransition');
+
 }
 
-$fsm->addTransition('Orthography', 'Init', 'Ortographyed', 'OrthographyCallback');
-$fsm->addTransition('Uniqueness', 'Ortographyed', 'Uniquenessed', 'UniquenessCallback');
-$fsm->addTransition('Postag', 'Uniquenessed', 'Postagged', 'PostagCallback');
-$fsm->addTransition('Classify', 'Postagged', 'Classified', 'ClassifyCallback');
-$fsm->addTransition('Flexion', 'Classified', 'Flexioned', 'FlexionCallback');
-$fsm->addTransition('Definition', 'Flexioned', 'Definitioned', 'DefinitionCallback');
-$fsm->addTransition('Context', 'Definitioned', 'Contexted', 'ContextCallback');
-$fsm->addTransition('Kunstgehalt', 'Contexted', 'Kunstgehalted', 'KunstgehaltCallback');
-$fsm->addTransition('Content', 'Kunstgehalted', 'Contented', 'ContentCallback');
-$fsm->addTransition('Association', 'Contented', 'Associationed', 'AssociationCallback');
-
-$fsm->process('Orthography');
-$fsm->process('Uniqueness');
-$fsm->process('Postag');
-$fsm->process('Classify');
-$fsm->process('Flexion');
-$fsm->process('Definition');
-$fsm->process('Context');
-$fsm->process('Kunstgehalt');
-$fsm->process('Content');
-$fsm->process('Association');

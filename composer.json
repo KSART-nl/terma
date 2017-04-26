@@ -1,0 +1,18 @@
+{
+    "name": "ksart/terma",
+    "description": "Terma",
+    "authors": [
+        {
+            "name": "Jeroen van der Steen",
+            "email": "info@jeroensteen.nl"
+        }
+    ],
+    "require": {
+        "illuminate/database": "^5.4"
+    },
+    "autoload": {
+    "classmap": [
+      "models"
+    ]
+  }
+}

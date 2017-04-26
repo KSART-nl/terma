@@ -3,4 +3,4 @@
 # terma
 Term system for collection art forms
 
-<img src="fsm.png?raw=true" width="600">
+<img src="fsm.png?raw=true" width="400">
