@@ -3,18 +3,21 @@
 error_reporting(E_ALL);
 ini_set("display_errors", 1);
 
+//Eloquent requirements
+require 'vendor/autoload.php';
+require 'config/database.php';
+require 'config/api_key.php';
+require 'start.php';
+
 //Pear library
 require 'FSM.php';
 require 'callbacks.php';
 
-//Eloquent requirements
-require 'vendor/autoload.php';
-require 'config/database.php';
-require 'start.php';
+//Start LaMachine virtual env
+shell_exec('. /lamachine/bin/activate');
+$GLOBALS["pixabay"] = new \Pixabay\PixabayClient(['key' => $pixabay_api_key]);
 
-$shell_output = shell_exec('. /lamachine/bin/activate');
-
-$source_terms = SourceTerm::take(100)->get();
+$source_terms = SourceTerm::inRandomOrder()->whereNotNull("term")->take(10)->get();
 foreach($source_terms as $source_term) {
 
 	$stack = [
@@ -47,4 +50,4 @@ foreach($source_terms as $source_term) {
 
 }
 
-$shell_output = shell_exec('. /lamachine/bin/deactivate');
+shell_exec('. /lamachine/bin/deactivate');
