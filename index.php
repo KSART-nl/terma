@@ -12,7 +12,7 @@ require 'vendor/autoload.php';
 require 'config/database.php';
 require 'start.php';
 
-system('/lamachine/bin/activate');
+$shell_output = shell_exec('. /lamachine/bin/activate');
 
 $source_terms = SourceTerm::take(100)->get();
 foreach($source_terms as $source_term) {
@@ -47,4 +47,4 @@ foreach($source_terms as $source_term) {
 
 }
 
-system('/lamachine/bin/deactivate');
+$shell_output = shell_exec('. /lamachine/bin/deactivate');
