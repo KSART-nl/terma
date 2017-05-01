@@ -6,10 +6,10 @@ function OrthographyCallback($symbol, &$payload, $currentState, $nextState) {
 	echo "<h1>{$payload['term']}</h1>";
 	echo "Orthography transition: {$symbol} {$payload["term"]} {$currentState} {$nextState}\n";
 	/*
-		Alfa characters:						abcdefghijklmnopqrstuvwxyz
-		Alfa diacritic characters:	àáâãäåāăąçćĉċčďđèéêëēĕėęěĝğġģĥħìíîïĩīĭıįĵķĺļľŀłñńņňŋòóôöõøōŏőŕŗřśŝşšţťŧùúûüũůūŭűųŵýÿŷźżž
-		Alfa ligature characters: 	æœĳß
-		Puntuation characters:			'- 
+	Alfa characters: abcdefghijklmnopqrstuvwxyz
+	Alfa diacritic characters: àáâãäåāăąçćĉċčďđèéêëēĕėęěĝğġģĥħìíîïĩīĭıįĵķĺļľŀłñńņňŋòóôöõøōŏőŕŗřśŝşšţťŧùúûüũůūŭűųŵýÿŷźżž
+	Alfa ligature characters: æœĳß
+	Puntuation characters: '- 
 	*/
 	$allowed_charset = "abcdefghijklmnopqrstuvwxyzàáâãäåāăąçćĉċčďđèéêëēĕėęěĝğġģĥħìíîïĩīĭıįĵķĺļľŀłñńņňŋòóôöõøōŏőŕŗřśŝşšţťŧùúûüũůūŭűųŵýÿŷźżžæœĳß'-0123456789 ";
 	if(preg_match("/[".$allowed_charset."]/", $payload["term"])) {
@@ -39,12 +39,12 @@ function PostagCallback($symbol, &$payload, $currentState, $nextState) {
 		$folia = file_get_contents("frogs/".$term_file_name.".xml");
 		$sxe = new SimpleXMLElement($folia);
 		$sxe->registerXPathNamespace('f', 'http://ilk.uvt.nl/folia');
-	  $words = $sxe->xpath('//f:w');
-  	$words = json_decode(json_encode($words),TRUE);
-	  foreach ($words as $word_key => $word) {
-	  	echo "Postag: ".$word["pos"]["@attributes"]["head"]."\n";
-	  	echo "Lemma: ".$word["lemma"]["@attributes"]["class"]."\n";
-	  }
+		$words = $sxe->xpath('//f:w');
+		$words = json_decode(json_encode($words),TRUE);
+		foreach ($words as $word_key => $word) {
+			echo "Postag: ".$word["pos"]["@attributes"]["head"]."\n";
+			echo "Lemma: ".$word["lemma"]["@attributes"]["class"]."\n";
+		}
 	}
 }
 function ClassifyCallback($symbol, &$payload, $currentState, $nextState) {
