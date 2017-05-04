@@ -1,6 +1,6 @@
 <img src="logo.png?raw=true" width="320">
 
-# terma
+# Terma, art form system
 Terma is an experimental term processing system for art forms  in Dutch.
 The initial goal is to process and restructure the terms from Dutch AAT.
 The Dutch AAT dataset is processed beforehand and saved in a MySQL database.
