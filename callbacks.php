@@ -77,18 +77,52 @@ function ClassifyCallback($symbol, &$payload, $currentState, $nextState) {
 }
 function FlexionCallback($symbol, &$payload, $currentState, $nextState) {
 	echo "Flexion transition: {$symbol} {$payload["term"]} {$currentState} {$nextState}\n";
-	//Create DOM from URL or file
+
+	//Start conjugation, with DOM from URL/file
 	$html = file_get_html("http://www.mijnwoordenboek.nl/ww.php?woord=".urlencode($payload["term"]));
 	$found = $html->find('div.slider-wrap', 1)->find('h2', 0)->plaintext;
-	if($found != "Helaas, het werkwoord of de werkwoordsvorm") {
-		//Find all td's 
-		foreach($html->find('td') as $element) {
-			echo $element->plaintext;
-		}
+	//Verb is found
+	if(strpos($found, "Helaas, het werkwoord of de werkwoordsvorm") === false) {
+		$conjugations = [];
+		
+		//Find font tag for infinitive wrapper
+		$infinitive_fonts = $html->find('font');
+		foreach ($infinitive_fonts as $font_key => $infinitive_font) {
+			//Verb is Dutch
+			if(strpos($infinitive_font->plaintext, "NL: ") !== false) {
+				//Find b tag in font tag for infinitive text
+				$infinitive = $infinitive_font->find('b', 0)->plaintext;
+				$conjugations[] = $infinitive;
+				//Find all td's for conjugations
+				foreach($html->find('td') as $element) {
+					//Not the conjugation type, but the conjugation it self
+					if(!$element->find('i.icon-question-sign')) {
+						//Trim person related stuff, like Hebben/Zijn as hulpwerkwoord (Person attributions, order is important because of ambiguity)
+						$verba_regex = '~(dat )?(ik|jij|hij|wij|jullie|zij)( )?(hebben|hebt|heb|heeft|hadden|had|zal|zult|zullen|zouden|zou|was|waren)?( )?(?<verba>.*)( hebben)?~';
+						if (preg_match_all($verba_regex, $element->plaintext, $verba_matches)) {
+							foreach($verba_matches["verba"] as $verba_match) {
+								if(strpos($verba_match, "Vervoeg zoals") === false) {
+									$conjugation = trim($verba_match); //Trimmed conjugation
+									$conjugation = str_replace(" hebben", "", $conjugation);
+									$conjugations[] = $conjugation;
+								}
+							}						
+						}
+					}
+				}
+			}
+		}		
+
+		sort($conjugations);
+		print_r(array_unique($conjugations));
 	}
+
+	//http://woordenlijst.org/#/?q=giraf
 }
 function DefinitionCallback($symbol, &$payload, $currentState, $nextState) {
 	echo "Definition transition: {$symbol} {$payload["term"]} {$currentState} {$nextState}\n";
+
+	//"https://glosbe.com/gapi_v0_1/";
 }
 function ContextCallback($symbol, &$payload, $currentState, $nextState) {
 	echo "Context transition: {$symbol} {$payload["term"]} {$currentState} {$nextState}\n";

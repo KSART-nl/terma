@@ -51,3 +51,5 @@ foreach($source_terms as $source_term) {
 }
 
 shell_exec('. /lamachine/bin/deactivate');
+
+//https://docs.google.com/spreadsheets/d/1DL5KNYvM8cTg6k5PsUJMkpltG6AJ12PQIiTwim90eQw/edit#gid=0

@@ -10,7 +10,8 @@
     "require": {
         "illuminate/database": "^5.4",
         "zoonman/pixabay-php-api": "^1.0",
-        "emanueleminotto/simple-html-dom": "^1.5"
+        "emanueleminotto/simple-html-dom": "^1.5",
+        "facebook/webdriver": "^1.4"
     },
     "autoload": {
     "classmap": [
