@@ -1,5 +1,10 @@
 <?php
-//var_dump(Term::all());
+
+set_time_limit(0);
+ini_set('memory_limit', '9000M');
+
+//Include the Apriori class
+require_once("apriori.php");
 
 function OrthographyCallback($symbol, &$payload, $currentState, $nextState) {
 	$payload["term"] = mb_strtolower($payload["term"]);
@@ -78,7 +83,7 @@ function ClassifyCallback($symbol, &$payload, $currentState, $nextState) {
 function FlexionCallback($symbol, &$payload, $currentState, $nextState) {
 	echo "Flexion transition: {$symbol} {$payload["term"]} {$currentState} {$nextState}\n";
 
-	//Start conjugation, with DOM from URL/file
+	//Term is Verba; start conjugation, with DOM from URL/file
 	$html = file_get_html("http://www.mijnwoordenboek.nl/ww.php?woord=".urlencode($payload["term"]));
 	$found = $html->find('div.slider-wrap', 1)->find('h2', 0)->plaintext;
 	//Verb is found
@@ -117,18 +122,31 @@ function FlexionCallback($symbol, &$payload, $currentState, $nextState) {
 		print_r(array_unique($conjugations));
 	}
 
-	//http://woordenlijst.org/#/?q=giraf
+	//Term is Nomina or Genera
+	//$url = "http://woordenlijst.org/#/?q=".urlencode($payload["term"]); //giraf
+
+	//Term is Adjectiva
+
+	//Term is Perioda
+
 }
 function DefinitionCallback($symbol, &$payload, $currentState, $nextState) {
 	echo "Definition transition: {$symbol} {$payload["term"]} {$currentState} {$nextState}\n";
 
 	//"https://glosbe.com/gapi_v0_1/";
+
+	//TODO: Use Glose API if Definitions are available, issue made here: https://github.com/subzeta/glosbe/issues/2
+	//TODO: Use Scope note from Dutch AAT
 }
 function ContextCallback($symbol, &$payload, $currentState, $nextState) {
 	echo "Context transition: {$symbol} {$payload["term"]} {$currentState} {$nextState}\n";
+
+	//TODO: Use Definition
 }
 function KunstgehaltCallback($symbol, &$payload, $currentState, $nextState) {
 	echo "Kunstgehalt transition: {$symbol} {$payload["term"]} {$currentState} {$nextState}\n";
+
+	//TODO: Use WikiPedia
 }
 function ContentCallback($symbol, &$payload, $currentState, $nextState) {
 	echo "Content transition: {$symbol} {$payload["term"]} {$currentState} {$nextState}\n";
@@ -140,27 +158,25 @@ function ContentCallback($symbol, &$payload, $currentState, $nextState) {
 		} catch (Exception $e) {
 		}
 	}*/
+
+	//TODO: Use MorgueFile
 }
 function AssociationCallback($symbol, &$payload, $currentState, $nextState) {
 	echo "Association transition: {$symbol} {$payload["term"]} {$currentState} {$nextState}\n\n";
-	/*
-	//Url for Term Info
+	
+	$output = "";
+
+	//Get pages links, for term
 	$json_links = file_get_contents("https://nl.wikipedia.org/w/api.php?action=query&format=json&titles=".urlencode($payload["term"])."&generator=links");
 	$links 	= json_decode($json_links, true);
 
-	//Query is fine
-	if( isset($termdata["query"])) {
-		//Query result is present
-		$termquery = $termdata["query"];
-		//Pages is present in Query
-		if( isset($termquery["pages"]) ) {
-			//So we have Pages
-			$pages = $termquery["pages"];
-			//Loop all Pages
-			foreach($pages as $page) {
-				//Get the Page ID
-				$pageid 	= $page["pageid"];
-				$pageurl 	= "https://nl.wikipedia.org/w/api.php?action=parse&prop=text&pageid=".$pageid."&format=json";
+	//Query gives page links, for term
+	if( isset($links["query"]["pages"]) ) {
+		//Loop all pages links
+		foreach($links["query"]["pages"] as $page) {
+			if(isset($page["pageid"])) {
+				//Get the page data, with the current page ID
+				$pageurl 	= "https://nl.wikipedia.org/w/api.php?action=parse&prop=text&pageid=".$page["pageid"]."&format=json";
 				$pagedata 	= file_get_contents($pageurl);
 				$pagedata 	= json_decode($pagedata, true);
 				//Parsing is fine
@@ -178,7 +194,7 @@ function AssociationCallback($symbol, &$payload, $currentState, $nextState) {
 						$output 		.= trim($pagestripped);
 					}
 				}
-			}	
+			}
 		}
 	}
 
@@ -186,6 +202,15 @@ function AssociationCallback($symbol, &$payload, $currentState, $nextState) {
 	//file_put_contents("wikidata.txt", $output);
 	//exit();
 	echo "Association output: ".$output."\n";
-	*/
+
+	//TODO: Use Apriori, unrelevant words
+
+	//Transactions from Text file (file) or Text string (text)
+	$data = ["text" => $output];
+	$apriori = new Apriori($data);
+	$associations = $apriori::get_associations();
+
+	print_r($associations);
+	exit();
 
 }

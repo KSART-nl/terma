@@ -9,3 +9,5 @@ config/database.php
 config/api_key.php
 
 /frogs/
+
+.idea/*
