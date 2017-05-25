@@ -8,8 +8,8 @@ require_once("apriori.php");
 
 function OrthographyCallback($symbol, &$payload, $currentState, $nextState) {
 	$payload["term"] = mb_strtolower($payload["term"]);
-	echo "<h1>{$payload['term']}</h1>";
-	echo "Orthography transition: {$symbol} {$payload["term"]} {$currentState} {$nextState}\n";
+	//echo "<h1>{$payload['term']}</h1>";
+	//echo "Orthography transition: {$symbol} {$payload["term"]} {$currentState} {$nextState}\n";
 	/*
 	Alfa characters: abcdefghijklmnopqrstuvwxyz
 	Alfa diacritic characters: àáâãäåāăąçćĉċčďđèéêëēĕėęěĝğġģĥħìíîïĩīĭıįĵķĺļľŀłñńņňŋòóôöõøōŏőŕŗřśŝşšţťŧùúûüũůūŭűųŵýÿŷźżž
@@ -18,23 +18,31 @@ function OrthographyCallback($symbol, &$payload, $currentState, $nextState) {
 	*/
 	$allowed_charset = "abcdefghijklmnopqrstuvwxyzàáâãäåāăąçćĉċčďđèéêëēĕėęěĝğġģĥħìíîïĩīĭıįĵķĺļľŀłñńņňŋòóôöõøōŏőŕŗřśŝşšţťŧùúûüũůūŭűųŵýÿŷźżžæœĳß'-0123456789 ";
 	if(preg_match("/[".$allowed_charset."]/", $payload["term"])) {
-		echo "Orthography is valid\n";
+
+		$payload["statusses"]["orthography"] = "valid";
+
 	} else {
-		echo "Orthography is invalid\n";
+		
+		$payload["statusses"]["orthography"] = "invalid";
+
 	}
 }
 function UniquenessCallback($symbol, &$payload, $currentState, $nextState) {
-	echo "Uniqueness transition: {$symbol} {$payload["term"]} {$currentState} {$nextState}\n";
+	//echo "Uniqueness transition: {$symbol} {$payload["term"]} {$currentState} {$nextState}\n";
 	$found_term = Term::where("term", $payload["term"])->get();
 	if(!count($found_term)) {
-		echo "Term is still unique\n";
+
+		$payload["statusses"]["uniqueness"] = "still unique";
+
 	} else {
-		echo "Term is not unique\n";
+
+		$payload["statusses"]["uniqueness"] = "not unique";
+
 	}
 }
 function PostagCallback($symbol, &$payload, $currentState, $nextState) {
 	$payload["term"] = escapeshellcmd($payload["term"]);
-	echo "Postag transition: {$symbol} {$payload["term"]} {$currentState} {$nextState}\n";
+	//echo "Postag transition: {$symbol} {$payload["term"]} {$currentState} {$nextState}\n";
 	$term_file_name = str_replace(" ", "_", $payload["term"]);
 	$create_term_file = "echo '".$payload["term"]."' > frogs/".$term_file_name.".txt";
 	$frog_term_file = "/lamachine/bin/frog -t frogs/".$term_file_name.".txt -X frogs/".$term_file_name.".xml";
@@ -47,13 +55,15 @@ function PostagCallback($symbol, &$payload, $currentState, $nextState) {
 		$words = $sxe->xpath('//f:w');
 		$words = json_decode(json_encode($words),TRUE);
 		foreach ($words as $word_key => $word) {
-			echo "Postag: ".$word["pos"]["@attributes"]["head"]."\n";
-			echo "Lemma: ".$word["lemma"]["@attributes"]["class"]."\n";
+
+			$payload["postags"][$word_key]["label"] = $word["pos"]["@attributes"]["head"];
+			$payload["postags"][$word_key]["lemma"] = $word["pos"]["@attributes"]["class"];
+
 		}
 	}
 }
 function ClassifyCallback($symbol, &$payload, $currentState, $nextState) {
-	echo "Classify transition: {$symbol} {$payload["term"]} {$currentState} {$nextState}\n";
+	//echo "Classify transition: {$symbol} {$payload["term"]} {$currentState} {$nextState}\n";
 	$expressions 	= ["discipline","style","movement","proces","method","technique","material","result","company","function","exposure"];
 	//Set default all Expressions
 	$classifications = array_fill_keys($expressions, 0);
@@ -78,10 +88,12 @@ function ClassifyCallback($symbol, &$payload, $currentState, $nextState) {
 		$classifications["function"] += 1;
 		$classifications["material"] += 1;
 	}
-	print_r($classifications);
+
+	$payload["classifications"] = $classifications;
+
 }
 function FlexionCallback($symbol, &$payload, $currentState, $nextState) {
-	echo "Flexion transition: {$symbol} {$payload["term"]} {$currentState} {$nextState}\n";
+	//echo "Flexion transition: {$symbol} {$payload["term"]} {$currentState} {$nextState}\n";
 
 	//Term is Verba; start conjugation, with DOM from URL/file
 	$html = file_get_html("http://www.mijnwoordenboek.nl/ww.php?woord=".urlencode($payload["term"]));
@@ -118,8 +130,10 @@ function FlexionCallback($symbol, &$payload, $currentState, $nextState) {
 			}
 		}		
 
+		$conjugations = array_unique($conjugations);
 		sort($conjugations);
-		print_r(array_unique($conjugations));
+		$payload["conjugations"] = $conjugations;
+
 	}
 
 	//Term is Nomina or Genera
@@ -131,25 +145,31 @@ function FlexionCallback($symbol, &$payload, $currentState, $nextState) {
 
 }
 function DefinitionCallback($symbol, &$payload, $currentState, $nextState) {
-	echo "Definition transition: {$symbol} {$payload["term"]} {$currentState} {$nextState}\n";
+	//echo "Definition transition: {$symbol} {$payload["term"]} {$currentState} {$nextState}\n";
 
 	//"https://glosbe.com/gapi_v0_1/";
 
 	//TODO: Use Glose API if Definitions are available, issue made here: https://github.com/subzeta/glosbe/issues/2
 	//TODO: Use Scope note from Dutch AAT
+
+	$payload["definitions"] = [];
 }
 function ContextCallback($symbol, &$payload, $currentState, $nextState) {
-	echo "Context transition: {$symbol} {$payload["term"]} {$currentState} {$nextState}\n";
+	//echo "Context transition: {$symbol} {$payload["term"]} {$currentState} {$nextState}\n";
 
 	//TODO: Use Definition
+
+	$payload["contexts"] = [];
 }
 function KunstgehaltCallback($symbol, &$payload, $currentState, $nextState) {
-	echo "Kunstgehalt transition: {$symbol} {$payload["term"]} {$currentState} {$nextState}\n";
+	//echo "Kunstgehalt transition: {$symbol} {$payload["term"]} {$currentState} {$nextState}\n";
 
 	//TODO: Use WikiPedia
+
+	$payload["kunstgehalt"] = 0.5;
 }
 function ContentCallback($symbol, &$payload, $currentState, $nextState) {
-	echo "Content transition: {$symbol} {$payload["term"]} {$currentState} {$nextState}\n";
+	//echo "Content transition: {$symbol} {$payload["term"]} {$currentState} {$nextState}\n";
 	//Get images from Pixabay
 	/*$results = $GLOBALS["pixabay"]->get(['q' => $payload["term"]], true);
 	foreach ($results["hits"] as $hit_key => $hit) {
@@ -160,15 +180,20 @@ function ContentCallback($symbol, &$payload, $currentState, $nextState) {
 	}*/
 
 	//TODO: Use MorgueFile
+	$payload["contents"] = [];
 }
 function AssociationCallback($symbol, &$payload, $currentState, $nextState) {
-	echo "Association transition: {$symbol} {$payload["term"]} {$currentState} {$nextState}\n\n";
+	//echo "Association transition: {$symbol} {$payload["term"]} {$currentState} {$nextState}\n\n";
 	
 	$output = "";
 
+	$stopwords = $GLOBALS["stopwords"]::all();
+	echo json_encode($payload);
+	exit();
+
 	//Get pages links, for term
 	$json_links = file_get_contents("https://nl.wikipedia.org/w/api.php?action=query&format=json&titles=".urlencode($payload["term"])."&generator=links");
-	$links 	= json_decode($json_links, true);
+	$links = json_decode($json_links, true);
 
 	//Query gives page links, for term
 	if( isset($links["query"]["pages"]) ) {
@@ -176,22 +201,22 @@ function AssociationCallback($symbol, &$payload, $currentState, $nextState) {
 		foreach($links["query"]["pages"] as $page) {
 			if(isset($page["pageid"])) {
 				//Get the page data, with the current page ID
-				$pageurl 	= "https://nl.wikipedia.org/w/api.php?action=parse&prop=text&pageid=".$page["pageid"]."&format=json";
-				$pagedata 	= file_get_contents($pageurl);
-				$pagedata 	= json_decode($pagedata, true);
+				$pageurl = "https://nl.wikipedia.org/w/api.php?action=parse&prop=text&pageid=".$page["pageid"]."&format=json";
+				$pagedata = file_get_contents($pageurl);
+				$pagedata = json_decode($pagedata, true);
 				//Parsing is fine
 				if( isset($pagedata["parse"]) ) {
 					$pageparsed = $pagedata["parse"];
 					//HTML text exists
 					if( isset($pageparsed["text"]["*"]) ) {
-						$pagehtml 		= $pageparsed["text"]["*"];
-						$pagehtml 		= str_replace( '<', ' <', $pagehtml);
+						$pagehtml = $pageparsed["text"]["*"];
+						$pagehtml = str_replace( '<', ' <', $pagehtml);
 						$pagestripped = strip_tags($pagehtml);
 						$pagestripped = str_replace( '  ', ' ', $pagestripped);
 						$pagestripped = preg_replace("~(\[(.*)\])~", "", $pagestripped);
 						$pagestripped = str_replace([") ", " ("], " ", $pagestripped);
 						$pagestripped = str_replace([";", ":", ")", "(", " - "], "", $pagestripped);
-						$output 		.= trim($pagestripped);
+						$output .= trim($pagestripped);
 					}
 				}
 			}
