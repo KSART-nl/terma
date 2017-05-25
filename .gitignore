@@ -11,3 +11,5 @@ config/api_key.php
 /frogs/
 
 .idea/*
+
+bin/

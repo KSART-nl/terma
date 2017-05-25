@@ -15,12 +15,19 @@ require 'start.php';
 require 'FSM.php';
 require 'callbacks.php';
 
+//Additional helpers
 require 'stopwords.php';
+
+use JonnyW\PhantomJs\Client;
+
 
 //Start LaMachine virtual env
 shell_exec('. /lamachine/bin/activate');
 $GLOBALS["pixabay"] = new \Pixabay\PixabayClient(['key' => $pixabay_api_key]);
+$GLOBALS["phantomjs"] = Client::getInstance();
 $GLOBALS["stopwords"] = new Stopwords();
+
+
 
 $source_terms = SourceTerm::inRandomOrder()->whereNotNull("term")->take(10)->get();
 foreach($source_terms as $source_term) {

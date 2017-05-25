@@ -136,8 +136,22 @@ function FlexionCallback($symbol, &$payload, $currentState, $nextState) {
 
 	}
 
+	$phantomjs = $GLOBALS["phantomjs"];
+
 	//Term is Nomina or Genera
-	//$url = "http://woordenlijst.org/#/?q=".urlencode($payload["term"]); //giraf
+	$url = "http://woordenlijst.org/#/?q=".urlencode($payload["term"]); //giraf
+
+	//Make request with Phantom
+	$request = $phantomjs->getMessageFactory()->createRequest($url, 'GET');
+	$request->setTimeout(10000);
+	$response = $phantomjs->getMessageFactory()->createResponse();
+	// Send the request
+	$phantomjs->send($request, $response);
+
+	if($response->getStatus() === 200) {
+	  // Dump the requested page content
+	  echo $response->getContent();
+	}
 
 	//Term is Adjectiva
 
