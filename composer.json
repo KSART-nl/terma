@@ -12,7 +12,7 @@
         "zoonman/pixabay-php-api": "^1.0",
         "emanueleminotto/simple-html-dom": "^1.5",
         "facebook/webdriver": "^1.4",
-        "php-ai/php-ml": "^0.4.1"
+        "jonnyw/php-phantomjs": "4.*"
     },
     "autoload": {
     "classmap": [
