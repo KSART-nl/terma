@@ -1,45 +1,59 @@
 digraph finite_state_machine {
+
 	rankdir=TB;
 
 	node [shape = doublecircle]; Complete, Unacceptable;
-	
 	node [shape = point]; Start;
-
 	node [shape = circle];
-	Start -> CheckUniqueness [ label = "Begin" ];
 
-	CheckUniqueness -> Orthography [ label = "IsUnique" ];
-	CheckUniqueness -> Unacceptable [ label = "NotUnique" ];
+	Start -> Ortography [ label = "Begin" ];
 
-	Orthography -> POSTagging [ label = "IsOrthographied" ];
-	Orthography -> Unacceptable [ label = "NotValidOrtography" ];
+	Ortography -> Uniqueness [ label = "IsOrthographied" ];
+	Ortography -> Unacceptable [ label = "NotValidOrtography" ];
 
-	POSTagging -> Classification [ label = "IsPosTagged" ];
-	POSTagging -> Unacceptable [ label = "NotValidPosLabel" ];
-	POSTagging -> Classification [ label = "UnPosTagged" ];
+	Uniqueness -> POSTagging [ label = "IsUnique" ];
+	Uniqueness -> Unacceptable [ label = "NotUnique" ];
 
-	Classification -> Flexion [ label = "IsClassifiedNaively" ];
-	Classification -> Flexion [ label = "IsClassifiedPrimitively" ];
-	Classification -> Flexion [ label = "UnClassified" ];
+	POSTagging -> Flexion [ label = "IsPOSTagged" ];
+	POSTagging -> Flexion [ label = "NotValidPosLabel" ];
+	POSTagging -> Flexion [ label = "UnPosTagged" ];
 
-	Flexion -> Definition [ label = "IsFlexioned" ];
-	Flexion -> Definition [ label = "UnFlexioned" ];
+	POSTagging -> Classify [ label = "IsPOSTagged" ];
+	POSTagging -> Classify [ label = "NotValidPosLabel" ];
+	POSTagging -> Classify [ label = "UnPosTagged" ];
 
-	Definition -> Context [ label = "IsDefined" ];
-	Definition -> Context [ label = "UnDefined" ];
+	Flexion -> Conjugate [ label = "IsVerba" ];
+	Flexion -> Subject [ label = "IsNominaOrGenera" ];
+	Flexion -> Adjective [ label = "IsAdjectiva" ];
 
-	Context -> Kunstgehalt [ label = "IsContexted" ];
-	Context -> Kunstgehalt [ label = "UnContexted" ];
+	Conjugate -> EndOfFirstChain [ label = "IsConjugated" ];
+	Subject -> EndOfFirstChain [ label = "IsSubjected" ];
+	Adjective -> EndOfFirstChain [ label = "IsAdjectived" ];
 
-	Kunstgehalt -> Content [ label = "IsKunstgehalted" ];
-	Kunstgehalt -> Content [ label = "UnKunstgehalted" ];
+	Classify -> EndOfFirstChain [ label = "IsClassifiedNaively" ];
+	Classify -> EndOfFirstChain [ label = "IsClassifiedPrimitively" ];
+	Classify -> EndOfFirstChain [ label = "IsClassifiedCategorically" ];
+	Classify -> EndOfFirstChain [ label = "UnClassified" ];
 
-	Content -> Associations [ label = "ReuseContented" ];
-	Content -> Associations [ label = "NewlyContented" ];
-	Content -> Associations [ label = "UnContented" ];
+	Uniqueness -> Wiki [ label = "IsUnique" ];
+	Wiki -> Associations [ label = "IsWikied" ];
+	Wiki -> Kunstgehalt [ label = "IsWikied" ];
+	Associations -> EndOfSecondChain [ label = "IsAssociationed" ];
+	Associations -> EndOfSecondChain [ label = "UnAssociationed" ];
+	Kunstgehalt -> EndOfSecondChain [ label = "IsKunstgehalted" ];
+	Kunstgehalt -> EndOfSecondChain [ label = "UnKunstgehalted" ];
 
-	Associations -> Complete [ label = "IsAssociationable" ];
-	Associations -> Complete [ label = "UnAssociationable" ];
+	Uniqueness -> Content [ label = "IsUnique" ];
+	Uniqueness -> Definitions [ label = "IsUnique" ];
+	Definitions -> Context [ label = "IsDefined" ];
+
+	Content -> EndOfThirdChain  [ label = "IsContented" ];
+	Context -> EndOfThirdChain  [ label = "IsContexted" ];
+
+	EndOfFirstChain -> Complete
+	EndOfSecondChain -> Complete
+	EndOfThirdChain -> Complete
 
 	Unacceptable
+
 }
