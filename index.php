@@ -27,7 +27,26 @@ $GLOBALS["pixabay"] = new \Pixabay\PixabayClient(['key' => $pixabay_api_key]);
 $GLOBALS["phantomjs"] = Client::getInstance();
 $GLOBALS["stopwords"] = new Stopwords();
 
+//Selenium server url
+$host = 'http://localhost:4444/wd/hub';
+$desired_capabilities = DesiredCapabilities::firefox();
+//$desired_capabilities->setCapability('acceptSslCerts', false);
+//Run headless Firefox
+$driver = RemoteWebDriver::create($host, $desired_capabilities);
+$target_url = "http://woordenlijst.org/#/?q=giraf";
+$driver->get($target_url);
+$driver->manage()->timeouts()->implicitlyWait = 10;
 
+try {
+
+	$element = $driver->findElement(WebDriverBy::xpath('//table[@class="pos-listing-table"]'));
+	var_dump($element);
+
+} catch (Exception\NoSuchElementException $e) {
+	echo "Element not found exception for: ".$target_url."\n";
+}
+
+exit();
 
 $source_terms = SourceTerm::inRandomOrder()->whereNotNull("term")->take(10)->get();
 foreach($source_terms as $source_term) {
