@@ -11,7 +11,7 @@ require 'config/env.php';
 require 'start.php';
 
 //Pear library
-require 'FSM.php';
+// require 'FSM.php';
 require 'callbacks.php';
 
 //Additional helpers
