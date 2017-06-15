@@ -7,8 +7,7 @@ ini_set('memory_limit', '9000M');
 
 //Eloquent requirements
 require 'vendor/autoload.php';
-require 'config/database.php';
-require 'config/api_key.php';
+require 'config/env.php';
 require 'start.php';
 
 //Pear library

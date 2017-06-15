@@ -3,12 +3,13 @@
 //27643 terms NL
 
 require_once 'vendor/autoload.php';
+require_once 'config/env.php';
 
 use GraphAware\Neo4j\Client\ClientBuilder;
 
 $neo4j = ClientBuilder::create()
-    ->addConnection('default', 'http://neo4j:@localhost:7474') // Example for HTTP connection configuration (port is optional)
-    ->addConnection('bolt', 'bolt://neo4j:@localhost:7687') // Example for BOLT connection configuration (port is optional)
+    ->addConnection('default', $neo4j_default_connection) // HTTP connection config (port is optional)
+    ->addConnection('bolt', $neo4j_bolt_connection) // BOLT connection config (port is optional)
     ->build();
 
 // Result contains a collection (array) of Record objects
