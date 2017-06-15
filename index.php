@@ -23,7 +23,7 @@ use Facebook\WebDriver\Remote\RemoteWebDriver;
 
 
 //Start LaMachine virtual env
-shell_exec('. /lamachine/bin/activate');
+shell_exec('. '.$lamachine_path.'/bin/activate');
 $GLOBALS["pixabay"] = new \Pixabay\PixabayClient(['key' => $pixabay_api_key]);
 $GLOBALS["phantomjs"] = Client::getInstance();
 $GLOBALS["stopwords"] = new Stopwords();
@@ -82,6 +82,6 @@ foreach($source_terms as $source_term) {
 
 }
 
-shell_exec('. /lamachine/bin/deactivate');
+shell_exec('. '.$lamachine_path.'/bin/deactivate');
 
 //https://docs.google.com/spreadsheets/d/1DL5KNYvM8cTg6k5PsUJMkpltG6AJ12PQIiTwim90eQw/edit#gid=0
