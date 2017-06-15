@@ -7,11 +7,11 @@ mkdir frogs wikis
 sudo chown -R terma:nginx *
 
 #Give read/write permissions to frogs wikis
-sudo cmod -R ug+rw frogs
-sudo cmod -R ug+rw wikis
+sudo chmod -R ug+rw frogs
+sudo chmod -R ug+rw wikis
 
 #Give read/write permissions to /stopwords/all.txt
-sudo cmod ug+rw stopwords/all.txt
+sudo chmod ug+rw stopwords/all.txt
 
 #Copy config file
 sudo cp config/env_example.php config/env.php
