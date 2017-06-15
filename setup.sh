@@ -14,4 +14,6 @@ sudo chmod -R ug+rw wikis
 sudo chmod ug+rw stopwords/all.txt
 
 #Copy config file
-sudo cp config/env_example.php config/env.php
+#sudo cp config/env_example.php config/env.php
+
+#CREATE DATABASE result_terms CHARACTER SET utf8 COLLATE utf8_unicode_ci;
