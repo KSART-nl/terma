@@ -12,3 +12,6 @@ sudo cmod -R ug+rw wikis
 
 #Give read/write permissions to /stopwords/all.txt
 sudo cmod ug+rw stopwords/all.txt
+
+#Copy config file
+sudo config/env_example.php config/env.php
