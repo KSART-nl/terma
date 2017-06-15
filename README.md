@@ -12,3 +12,11 @@ All the credits of the initial dataset goes to Dutch AAT.
 See the FSM graph and the Wiki process page for more information about Terma.
 
 <img src="fsm.png?raw=true" width="400">
+
+# Requirements
+- PHP (Pthread/FSM)
+- MySQL/MariaDB
+- Neo4j/NeoSemantics
+- LaMachine/Frog (Python)
+- Selenium/Java/Firefox
+- Linux (Sh)
