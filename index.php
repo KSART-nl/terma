@@ -18,6 +18,8 @@ require 'callbacks.php';
 require 'stopwords.php';
 
 use JonnyW\PhantomJs\Client;
+use Facebook\WebDriver\Remote\DesiredCapabilities;
+use Facebook\WebDriver\Remote\RemoteWebDriver;
 
 
 //Start LaMachine virtual env
