@@ -6,8 +6,8 @@ use Illuminate\Database\Capsule\Manager as Capsule;
 $neo4j_default_connection = 'http://neo4j:password@localhost:7474';
 $neo4j_bolt_connection = 'bolt://neo4j:password@localhost:7687';
 
-$capsule = new Capsule();
 // Result database connection
+$capsule = new Capsule();
 $capsule->addConnection(array(
     'driver'    => 'mysql',
     'host'      => 'localhost',
