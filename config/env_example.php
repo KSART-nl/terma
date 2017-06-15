@@ -10,7 +10,7 @@ $neo4j_bolt_connection = 'bolt://neo4j:password@localhost:7687';
 $capsule = new Capsule();
 $capsule->addConnection(array(
     'driver'    => 'mysql',
-    'host'      => 'localhost',
+    'host'      => '127.0.0.1', // local or remote
     'database'  => 'database',
     'username'  => 'username',
     'password'  => 'password',
@@ -23,3 +23,9 @@ $capsule->bootEloquent();
 
 // API Keys
 $wordnik_api_key = "";
+$bing_api_key = "";
+$morguefile_api_key = "";
+$pixabay_api_key = "";
+
+// Env paths
+$lamachine_path = "/opt/LaMachine";
