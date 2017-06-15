@@ -14,4 +14,4 @@ sudo cmod -R ug+rw wikis
 sudo cmod ug+rw stopwords/all.txt
 
 #Copy config file
-sudo config/env_example.php config/env.php
+sudo cp config/env_example.php config/env.php
