@@ -3,8 +3,8 @@
 #Setup of Terma, chmod a+x setup.sh
 mkdir frogs wikis
 
-#Give user:group permissions to all files
-sudo chown -R terma:nginx *
+#Give user:group permissions to all files, better terma:nginx
+sudo chown -R root:root *
 
 #Give read/write permissions to frogs wikis
 sudo chmod -R ug+rw frogs
