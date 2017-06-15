@@ -17,7 +17,7 @@ require 'callbacks.php';
 //Additional helpers
 require 'stopwords.php';
 
-use JonnyW\PhantomJs\Client;
+// use JonnyW\PhantomJs\Client;
 use Facebook\WebDriver\Remote\DesiredCapabilities;
 use Facebook\WebDriver\Remote\RemoteWebDriver;
 
@@ -25,7 +25,7 @@ use Facebook\WebDriver\Remote\RemoteWebDriver;
 //Start LaMachine virtual env
 shell_exec('. '.$lamachine_path.'/lamachine/bin/activate');
 $GLOBALS["pixabay"] = new \Pixabay\PixabayClient(['key' => $pixabay_api_key]);
-$GLOBALS["phantomjs"] = Client::getInstance();
+// $GLOBALS["phantomjs"] = Client::getInstance();
 $GLOBALS["stopwords"] = new Stopwords();
 
 //Selenium server url
