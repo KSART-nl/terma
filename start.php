@@ -9,8 +9,8 @@ ini_set('max_execution_time', 60000000);
 Model::unguard();
 
 //Migrations and Seeds
-if(!Capsule::schema("terma")->hasTable('terms')) {
-	Capsule::schema("terma")->create("terms", function($table) {
+if(!Capsule::schema("result_terms")->hasTable('terms')) {
+	Capsule::schema("result_terms")->create("terms", function($table) {
 		$table->increments('id');
 
 		$table->text('term');
@@ -20,8 +20,8 @@ if(!Capsule::schema("terma")->hasTable('terms')) {
 	});
 }
 
-if(!Capsule::schema("terma")->hasTable('adjectivas')) {
-	Capsule::schema("terma")->create("adjectivas", function($table) {
+if(!Capsule::schema("result_terms")->hasTable('adjectivas')) {
+	Capsule::schema("result_terms")->create("adjectivas", function($table) {
 		$table->increments('id');
 
 		$table->text('possitive_adjective'); //Example: Dure (Default)
@@ -38,8 +38,8 @@ if(!Capsule::schema("terma")->hasTable('adjectivas')) {
 	});
 }
 
-if(!Capsule::schema("terma")->hasTable('generas')) {
-	Capsule::schema("terma")->create("generas", function($table) {
+if(!Capsule::schema("result_terms")->hasTable('generas')) {
+	Capsule::schema("result_terms")->create("generas", function($table) {
 		$table->increments('id');
 
 		//Mannelijk
@@ -58,8 +58,8 @@ if(!Capsule::schema("terma")->hasTable('generas')) {
 	});
 }
 
-if(!Capsule::schema("terma")->hasTable('nominas')) {
-	Capsule::schema("terma")->create("nominas", function($table) {
+if(!Capsule::schema("result_terms")->hasTable('nominas')) {
+	Capsule::schema("result_terms")->create("nominas", function($table) {
 		$table->increments('id');
 
 		$table->text('singular'); //Example: Schilderij (Default)
@@ -71,8 +71,8 @@ if(!Capsule::schema("terma")->hasTable('nominas')) {
 	});
 }
 
-if(!Capsule::schema("terma")->hasTable('verbas')) {
-	Capsule::schema("terma")->create("verbas", function($table) {
+if(!Capsule::schema("result_terms")->hasTable('verbas')) {
+	Capsule::schema("result_terms")->create("verbas", function($table) {
 		$table->increments('id');
 
 		$table->text('infinitive'); //Infinitief
@@ -86,9 +86,6 @@ if(!Capsule::schema("terma")->hasTable('verbas')) {
 
 		$table->text('third_singular_person');
 		$table->text('third_plural_person');
-
-
-
 
 		$table->timestamps();
 	});
