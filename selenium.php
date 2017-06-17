@@ -8,8 +8,10 @@ function get_woordenlijst_table($term, $driver) {
 	$driver->wait(0, 10);
 	$driver->manage()->timeouts()->implicitlyWait = 10;
 	try {
-		$element = $driver->findElement(WebDriverBy::cssSelector('table.info-table.pos-listing-table tr td span'));
-		var_dump($element);
+		$elements = $driver->findElement(WebDriverBy::cssSelector('table.info-table.pos-listing-table tr td span'));
+		
+		foreach ($elements as $element) var_dump($element->getText());
+
 	} catch (Exception\NoSuchElementException $e) {
 		echo "Element not found exception for: ".$target_url."\n";
 	}
