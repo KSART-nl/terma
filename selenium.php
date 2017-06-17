@@ -10,12 +10,8 @@ function get_woordenlijst_table($term, $driver) {
 	try {
 		$elements = $driver->findElement(WebDriverBy::cssSelector('table.info-table.pos-listing-table tr td span'));
 		
-		foreach ($elements as $element) {
+		foreach ($elements as $element) echo $element->getAttribute('innerHTML');
 
-			$text = $element->getAttribute('innerHTML').then(function($text) {
-				echo $text;
-			});
-		}
 
 	} catch (Exception\NoSuchElementException $e) {
 		echo "Element not found exception for: ".$target_url."\n";
