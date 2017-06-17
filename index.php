@@ -35,7 +35,7 @@ $GLOBALS["pixabay"] = new \Pixabay\PixabayClient(['key' => $pixabay_api_key]);
 // $GLOBALS["phantomjs"] = Client::getInstance();
 $GLOBALS["stopwords"] = new Stopwords();
 
-get_woordenlijst_table("giraf", $driver);
+Facebook\WebDriver\get_woordenlijst_table("koe", $driver);
 
 exit();
 
