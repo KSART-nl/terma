@@ -19,6 +19,7 @@ require 'stopwords.php';
 require 'selenium.php';
 
 // use JonnyW\PhantomJs\Client;
+use Facebook\WebDriver;
 use Facebook\WebDriver\Remote\DesiredCapabilities;
 use Facebook\WebDriver\Remote\RemoteWebDriver;
 
