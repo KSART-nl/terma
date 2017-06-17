@@ -16,10 +16,17 @@ require 'callbacks.php';
 
 //Additional helpers
 require 'stopwords.php';
+require 'selenium.php';
 
 // use JonnyW\PhantomJs\Client;
 use Facebook\WebDriver\Remote\DesiredCapabilities;
 use Facebook\WebDriver\Remote\RemoteWebDriver;
+
+//Selenium server url
+$host = 'http://localhost:4444/wd/hub';
+$desired_capabilities = DesiredCapabilities::firefox();
+//Run headless Firefox
+$driver = RemoteWebDriver::create($host, $desired_capabilities);
 
 //Start LaMachine virtual env
 shell_exec('. '.$lamachine_path.'/lamachine/bin/activate');
@@ -27,23 +34,7 @@ $GLOBALS["pixabay"] = new \Pixabay\PixabayClient(['key' => $pixabay_api_key]);
 // $GLOBALS["phantomjs"] = Client::getInstance();
 $GLOBALS["stopwords"] = new Stopwords();
 
-namespace Facebook\WebDriver {
-	//Selenium server url
-	$host = 'http://localhost:4444/wd/hub';
-	$desired_capabilities = DesiredCapabilities::firefox();
-	//Run headless Firefox
-	$driver = RemoteWebDriver::create($host, $desired_capabilities);
-
-	$target_url = "http://woordenlijst.org/#/?q=giraf";
-	$driver->get($target_url);
-	$driver->manage()->timeouts()->implicitlyWait = 10;
-	try {
-		$element = $driver->findElement(WebDriverBy::xpath('//table[@class="pos-listing-table"]'));
-		var_dump($element);
-	} catch (Exception\NoSuchElementException $e) {
-		echo "Element not found exception for: ".$target_url."\n";
-	}
-}
+get_woordenlijst_table("giraf", $driver);
 
 exit();
 
