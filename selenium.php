@@ -8,7 +8,7 @@ function get_woordenlijst_table($term, $driver) {
 	$driver->wait(0, 10);
 	$driver->manage()->timeouts()->implicitlyWait(10);
 	try {
-		$elements = $driver->findElement(WebDriverBy::cssSelector('table.info-table.pos-listing-table tr td span'));
+		$elements = $driver->findElements(WebDriverBy::cssSelector('table.info-table.pos-listing-table tr td span'));
 		
 		foreach ($elements as $element) echo $element->getAttribute('innerHTML');
 
