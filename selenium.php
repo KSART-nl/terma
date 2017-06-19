@@ -159,3 +159,43 @@ function get_woordenlijst_adjectiva_table($term, $driver) {
 
 }
 
+function get_woordenlijst_genera_table($term, $driver) {
+
+	$target_url = "http://woordenlijst.org/#/?q=".$term;
+	$driver->get($target_url);
+	$driver->wait(0, 10);
+	$driver->manage()->timeouts()->implicitlyWait(10);
+	$woordenlijst = [];
+
+	try {
+
+		$elements = $driver->findElements(WebDriverBy::cssSelector('table.info-table.pos-listing-table tr td span'));		
+		
+		foreach ($elements as $element_key => $element) {
+
+			switch (true) {
+			    case $element_key === 2: //Example: schilder
+			        $woordenlijst['singular_masculine'] = $element->getAttribute('innerHTML');
+			        break;
+			    case $element_key === 9: //Example: schilders
+			        $woordenlijst['plural_masculine'] = $element->getAttribute('innerHTML');
+			        break;
+			    case $element_key === 14: //Example: schildertje
+			        $woordenlijst['singular_masculine_diminutive'] = $element->getAttribute('innerHTML');
+			        break;
+			    case $element_key === 19: //Example: schildertjes
+			        $woordenlijst['plural_masculine_diminutive'] = $element->getAttribute('innerHTML');
+			        break;
+			}
+
+		}
+
+	} catch (Exception\NoSuchElementException $e) {
+		echo "Element not found exception for: ".$target_url."\n";
+	}
+
+	var_dump($woordenlijst);
+	return $woordenlijst;
+
+}
+
