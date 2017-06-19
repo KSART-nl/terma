@@ -10,7 +10,7 @@ function get_woordenlijst_table($term, $driver) {
 	try {
 		$elements = $driver->findElements(WebDriverBy::cssSelector('table.info-table.pos-listing-table tr td span'));
 		
-		foreach ($elements as $element) echo $element->getAttribute('innerHTML');
+		foreach ($elements as $element) echo $element->getAttribute('innerHTML').PHP_EOL;
 
 
 	} catch (Exception\NoSuchElementException $e) {
