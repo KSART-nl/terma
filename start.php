@@ -24,15 +24,16 @@ if(!Capsule::schema("result_terms")->hasTable('adjectivas')) {
 	Capsule::schema("result_terms")->create("adjectivas", function($table) {
 		$table->increments('id');
 
-		$table->text('possitive_adjective'); //Example: Dure (Default)
-		$table->text('comparative_adjective'); //Example: Duurdere
-
-		//Stellende vorm
-		$table->text('possitive_degree'); //Example: Duur		
-		//Vegrotende trap
-		$table->text('comparative_degree'); //Example: Duurder		
+		//Stellende trap
+		$table->text('possitive_degree'); //Example: Duur (DB default)
+		$table->text('declined_possitive_adjective'); //Example: Dure (UI default)
+		$table->text('possitive_s_degree'); //Example: Duurs
+		//Vergrotende trap
+		$table->text('comparative_degree'); //Example: Duurder
+		$table->text('declined_comparative_adjective'); //Example: Duurdere
 		//Overtreffende trap
-		$table->text('superlative_degree'); //Example: Duurst (Het), Duurste (De)
+		$table->text('superlative_degree'); //Example: Duurst
+		$table->text('declined_superlative_adjective'); //Example: Duurste
 
 		$table->timestamps();
 	});
