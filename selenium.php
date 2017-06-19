@@ -44,16 +44,16 @@ function get_woordenlijst_table($term, $driver) {
 		foreach ($elements as $element_key => $element) {
 
 			switch (true) {
-			    case $element_key === 3: //Example: koe
+			    case $element_key === 2: //Example: koe
 			        $woordenlijst['singular'] = $element->getAttribute('innerHTML');
 			        break;
-			    case $element_key === 10: //Example: koeien
+			    case $element_key === 9: //Example: koeien
 			        $woordenlijst['plural'] = $element->getAttribute('innerHTML');
 			        break;
-			    case $element_key === 15: //Example: koeitje
+			    case $element_key === 14: //Example: koeitje
 			        $woordenlijst['singular_diminutive'] = $element->getAttribute('innerHTML');
 			        break;
-			    case $element_key === 20: //Example: koeitjes
+			    case $element_key === 19: //Example: koeitjes
 			        $woordenlijst['plural_diminutive'] = $element->getAttribute('innerHTML');
 			        break;
 			}
