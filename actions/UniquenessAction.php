@@ -1,6 +1,6 @@
 <?php
 
-function Uniqueness($term) {
+function UniquenessAction($term) {
 
 	return(!count(ResultTerm::where("term", $term)->get()));
 

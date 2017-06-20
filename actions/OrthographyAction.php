@@ -7,7 +7,7 @@
 	Puntuation characters: '- 
 */
 
-function Ortography($term) {
+function OrtographyAction($term) {
 
 	$allowed_charset = "abcdefghijklmnopqrstuvwxyzàáâãäåāăąçćĉċčďđèéêëēĕėęěĝğġģĥħìíîïĩīĭıįĵķĺļľŀłñńņňŋòóôöõøōŏőŕŗřśŝşšţťŧùúûüũůūŭűųŵýÿŷźżžæœĳß'-0123456789 ";
 	$term = escapeshellcmd(strtolower($term));
