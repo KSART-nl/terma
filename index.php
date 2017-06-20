@@ -17,7 +17,7 @@ require 'workers/TermWorker.php';
 require 'jobs/AChainJob.php';
 require 'jobs/RChainJob.php';
 require 'jobs/TChainJob.php';
-require 'actions/Ortography.php';
+require 'actions/Orthography.php';
 require 'actions/Uniqueness.php';
 
 //use JonnyW\PhantomJs\Client;
