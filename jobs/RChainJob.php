@@ -15,6 +15,6 @@ class RChainJob extends Thread {
 		//Kunstgehalt
 
 		$stop = microtime(true);
-		echo "From R ".$stop - $start;
+		echo "From R ".$stop - $start.PHP_EOL;
 	}
 }
