@@ -28,7 +28,6 @@ namespace Facebook\WebDriver;
 	[<span class="ng-binding" ng-bind-html="info.hyph">koe·tjes</span>]
 	koe·tjes
 */
-
 function get_woordenlijst_nomina_table($term, $driver) {
 
 	$target_url = "http://woordenlijst.org/#/?q=".$term;
@@ -159,6 +158,32 @@ function get_woordenlijst_adjectiva_table($term, $driver) {
 
 }
 
+/*
+	Looping elements gives this output:
+
+	enkelvoud
+	politieagent
+	po·li·tie·agent
+	<span class="highlighted">politieagent</span>
+	politieagent
+	[<span class="ng-binding" ng-bind-html="info.hyph">po·li·tie·agent</span>]
+	po·li·tie·agent
+	meervoud
+	po·li·tie·agen·ten
+	politieagenten
+	[<span class="ng-binding" ng-bind-html="info.hyph">po·li·tie·agen·ten</span>]
+	po·li·tie·agen·ten
+	enkelvoud verkleinvorm
+	po·li·tie·agent·je
+	politieagentje
+	[<span class="ng-binding" ng-bind-html="info.hyph">po·li·tie·agent·je</span>]
+	po·li·tie·agent·je
+	meervoud verkleinvorm
+	po·li·tie·agent·jes
+	politieagentjes
+	[<span class="ng-binding" ng-bind-html="info.hyph">po·li·tie·agent·jes</span>]
+	po·li·tie·agent·jes
+*/
 function get_woordenlijst_genera_table($term, $driver) {
 
 	$target_url = "http://woordenlijst.org/#/?q=".$term;
@@ -198,4 +223,3 @@ function get_woordenlijst_genera_table($term, $driver) {
 	return $woordenlijst;
 
 }
-

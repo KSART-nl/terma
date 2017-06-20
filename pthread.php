@@ -54,13 +54,6 @@ class TermToUpperJob extends Thread {
     }
 }
 
-// Worker
-class TermWorker extends Worker {
-    public function run() {
-    	// echo 'Running '.$this->getStacked().' jobs'.PHP_EOL;
-    }
-}
-
 $start = microtime(true);
 $termpool = new Pool(5, TermWorker::class);
 $terms = ['Schilderen', 'Tekenen', 'Beeldhouwen', 'Breien', 'Knutselen'];

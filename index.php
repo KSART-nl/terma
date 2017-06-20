@@ -2,26 +2,28 @@
 
 error_reporting(E_ALL);
 ini_set("display_errors", 1);
-set_time_limit(0);
-ini_set('memory_limit', '9000M');
 
-//Eloquent requirements
 require 'vendor/autoload.php';
 require 'config/env.php';
 require 'start.php';
-
 //Pear library
 // require 'FSM.php';
-require 'callbacks.php';
-
-//Additional helpers
+// require 'callbacks.php';
 require 'stopwords.php';
 require 'selenium.php';
 
-// use JonnyW\PhantomJs\Client;
+//Workers, jobs and actions
+require 'workers/TermWorker.php';
+require 'jobs/AChainJob.php';
+require 'jobs/RChainJob.php';
+require 'jobs/TChainJob.php';
+//
+
+//use JonnyW\PhantomJs\Client;
 use Facebook\WebDriver;
 use Facebook\WebDriver\Remote\DesiredCapabilities;
 use Facebook\WebDriver\Remote\RemoteWebDriver;
+use GraphAware\Neo4j\Client\ClientBuilder;
 
 //Selenium server url
 $host = 'http://localhost:4444/wd/hub';
@@ -35,10 +37,60 @@ $GLOBALS["pixabay"] = new \Pixabay\PixabayClient(['key' => $pixabay_api_key]);
 // $GLOBALS["phantomjs"] = Client::getInstance();
 $GLOBALS["stopwords"] = new Stopwords();
 
-//Facebook\WebDriver\get_woordenlijst_nomina_table("koe", $driver);
-Facebook\WebDriver\get_woordenlijst_adjectiva_table("leuk", $driver);
+$neo4j = ClientBuilder::create()
+    ->addConnection('default', $neo4j_default_connection) // HTTP connection config (port is optional)
+    ->addConnection('bolt', $neo4j_bolt_connection) // BOLT connection config (port is optional)
+    ->build();
+
+// Result contains a collection (array) of Record objects
+$result = $neo4j->run(
+'MATCH (s:ns0_ScopeNote)<-[rel:ns1_scopeNote]-(r:Resource)
+WHERE s.ns6_value IS NOT NULL AND r.ns2_label IS NOT NULL
+RETURN
+r.ns2_label AS label,
+r.ns1_prefLabel AS prefLabel,
+r.ns1_altLabel AS altLabel,
+r.ns0_parentString AS parentString,
+
+s.ns6_value AS scopeNote
+
+LIMIT 5'
+);
+// Get all records
+$records = $result->getRecords();
+
+$start = microtime(true);
+$termpool = new Pool(5, TermWorker::class);
+foreach($terms as $term) {
+	$termpool->submit(new AChainJob($term));
+	$termpool->submit(new RChainJob($term));
+	$termpool->submit(new TChainJob($term));
+}
+$termpool->shutdown();
+echo "End Pool ".microtime(true) - $start;
 
 exit();
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+//Facebook\WebDriver\get_woordenlijst_nomina_table("koe", $driver);
+//Facebook\WebDriver\get_woordenlijst_adjectiva_table("leuk", $driver);
+//Facebook\WebDriver\get_woordenlijst_genera_table("agent", $driver);
+
+
 
 $source_terms = SourceTerm::inRandomOrder()->whereNotNull("term")->take(10)->get();
 foreach($source_terms as $source_term) {
