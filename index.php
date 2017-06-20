@@ -61,12 +61,16 @@ $terms = @$result->records();
 $start = microtime(true);
 $termpool = new Pool(5, TermWorker::class);
 foreach($terms as $term) {
-	$term->label = Ortography($term->label);
-	if(Uniqueness($term->label)) {
-		$termpool->submit(new AChainJob($term));
-		$termpool->submit(new RChainJob($term));
-		$termpool->submit(new TChainJob($term));
+
+	if(isset($term->label)) {
+		$term->label = Ortography($term->label);
+		if(Uniqueness($term->label)) {
+			$termpool->submit(new AChainJob($term));
+			$termpool->submit(new RChainJob($term));
+			$termpool->submit(new TChainJob($term));
+		}
 	}
+	
 }
 $termpool->shutdown();
 $stop = microtime(true);
