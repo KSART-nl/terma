@@ -65,6 +65,7 @@ foreach($terms as $term) {
 	$termpool->submit(new TChainJob($term));
 }
 $termpool->shutdown();
+$stop = microtime(true);
 echo "End Pool ".$stop - $start.PHP_EOL;
 
 exit();
