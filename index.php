@@ -58,6 +58,7 @@ LIMIT 5'
 );
 // Get all records
 $terms = $result->getRecords();
+var_dump($terms); exit();
 
 $start = microtime(true);
 $termpool = new Pool(5, TermWorker::class);
@@ -67,7 +68,7 @@ foreach($terms as $term) {
 	$termpool->submit(new TChainJob($term));
 }
 $termpool->shutdown();
-echo "End Pool ".microtime(true) - $start;
+echo "End Pool ".(String)(microtime(true) - $start);
 
 exit();
 
