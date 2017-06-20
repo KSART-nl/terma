@@ -83,6 +83,9 @@ foreach($terms as $term) {
 	
 }
 $termpool->shutdown();
+
+shell_exec('. '.$lamachine_path.'/lamachine/bin/deactivate');
+
 $stop = microtime(true);
 echo "End Pool ".(String)($stop - $start).PHP_EOL;
 
@@ -141,7 +144,3 @@ foreach($source_terms as $source_term) {
 	$fsm->process('AssociationTransition');
 
 }
-
-shell_exec('. '.$lamachine_path.'/lamachine/bin/deactivate');
-
-//https://docs.google.com/spreadsheets/d/1DL5KNYvM8cTg6k5PsUJMkpltG6AJ12PQIiTwim90eQw/edit#gid=0
