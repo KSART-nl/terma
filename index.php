@@ -17,8 +17,9 @@ require 'workers/TermWorker.php';
 require 'jobs/AChainJob.php';
 require 'jobs/RChainJob.php';
 require 'jobs/TChainJob.php';
-require 'actions/Orthography.php';
-require 'actions/Uniqueness.php';
+require 'jobs/PostagJob.php';
+require 'actions/OrthographyAction.php';
+require 'actions/UniquenessAction.php';
 
 //use JonnyW\PhantomJs\Client;
 use Facebook\WebDriver;
@@ -68,8 +69,11 @@ foreach($terms as $term) {
 	$termParentString = $term->value('parentString');
 	$termScopeNote = $term->value('scopeNote');
 
-	$termLabel = Ortography($termLabel);
-	if($termLabel != false && Uniqueness($termLabel)) {
+	$termLabel = OrtographyAction($termLabel);
+	if($termLabel != false && UniquenessAction($termLabel)) {
+
+		$termpool->submit(new PostagJob($term));
+		$termpool->submit(new ClassifyJob($term));
 
 		$termpool->submit(new AChainJob($term));
 		$termpool->submit(new RChainJob($term));
