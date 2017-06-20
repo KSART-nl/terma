@@ -34,7 +34,7 @@ $desired_capabilities = DesiredCapabilities::firefox();
 //Run headless Firefox
 $driver = RemoteWebDriver::create($host, $desired_capabilities);
 
-//Start LaMachine virtual env
+//Activate LaMachine virtual env
 shell_exec('. '.$lamachine_path.'/lamachine/bin/activate');
 $GLOBALS["pixabay"] = new \Pixabay\PixabayClient(['key' => $pixabay_api_key]);
 // $GLOBALS["phantomjs"] = Client::getInstance();
@@ -84,7 +84,8 @@ foreach($terms as $term) {
 }
 $termpool->shutdown();
 
-shell_exec('. '.$lamachine_path.'/lamachine/bin/deactivate');
+//Deactivate LaMachine virtual env
+shell_exec('deactivate');
 
 $stop = microtime(true);
 echo "End Pool ".(String)($stop - $start).PHP_EOL;
