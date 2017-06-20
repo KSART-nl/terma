@@ -18,6 +18,7 @@ require 'jobs/AChainJob.php';
 require 'jobs/RChainJob.php';
 require 'jobs/TChainJob.php';
 require 'jobs/PostagJob.php';
+require 'jobs/ClassifyJob.php';
 require 'actions/OrthographyAction.php';
 require 'actions/UniquenessAction.php';
 
