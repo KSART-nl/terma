@@ -15,6 +15,6 @@ class TChainJob extends Thread {
 		//Context
 
 		$stop = microtime(true);
-		echo "From T ".$stop - $start.PHP_EOL;
+		echo "From T ".(String)($stop - $start).PHP_EOL;
 	}
 }

@@ -16,6 +16,6 @@ class AChainJob extends Thread {
 		//Classify
 
 		$stop = microtime(true);
-		echo "From A ".$stop - $start.PHP_EOL;
+		echo "From A ".(String)($stop - $start).PHP_EOL;
 	}
 }

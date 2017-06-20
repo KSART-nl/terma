@@ -66,7 +66,7 @@ foreach($terms as $term) {
 }
 $termpool->shutdown();
 $stop = microtime(true);
-echo "End Pool ".$stop - $start.PHP_EOL;
+echo "End Pool ".(String)($stop - $start).PHP_EOL;
 
 exit();
 
