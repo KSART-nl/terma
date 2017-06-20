@@ -32,6 +32,8 @@ class PostagJob extends Thread {
 			}
 		}
 
+		print_r($this->worker->postag_labels);
+
 		$stop = microtime(true);
 		echo "From PostagJob ".(String)($stop - $start).PHP_EOL;
 	}
