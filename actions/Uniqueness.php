@@ -1,9 +1,7 @@
 <?php
 
-require 'vendor/autoload.php';
-
 function Uniqueness($term) {
 
-	return(!count(Term::where("term", $term)->get()));
+	return(!count(ResultTerm::where("term", $term)->get()));
 
 }

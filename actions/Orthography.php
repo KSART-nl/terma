@@ -1,7 +1,5 @@
 <?php
 
-require 'vendor/autoload.php';
-
 /*
 	Alfa characters: abcdefghijklmnopqrstuvwxyz
 	Alfa diacritic characters: àáâãäåāăąçćĉċčďđèéêëēĕėęěĝğġģĥħìíîïĩīĭıįĵķĺļľŀłñńņňŋòóôöõøōŏőŕŗřśŝşšţťŧùúûüũůūŭűųŵýÿŷźżž
