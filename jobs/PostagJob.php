@@ -14,7 +14,7 @@ class PostagJob extends Thread {
 		$termFilename = str_replace(" ", "_", $termLabel);
 
 		$create_term_file = "echo '".$termLabel."' > frogs/".$termFilename.".txt";
-		$frog_term_file = "/lamachine/bin/frog -t frogs/".$termFilename.".txt -X frogs/".$termFilename.".xml";
+		$frog_term_file = $lamachine_path."/lamachine/bin/frog -t frogs/".$termFilename.".txt -X frogs/".$termFilename.".xml";
 		shell_exec($create_term_file);
 		shell_exec($frog_term_file);
 

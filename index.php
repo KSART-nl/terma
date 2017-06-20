@@ -85,7 +85,7 @@ foreach($terms as $term) {
 $termpool->shutdown();
 
 //Deactivate LaMachine virtual env
-shell_exec('deactivate');
+//shell_exec('deactivate');
 
 $stop = microtime(true);
 echo "End Pool ".(String)($stop - $start).PHP_EOL;
