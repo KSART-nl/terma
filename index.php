@@ -17,7 +17,8 @@ require 'workers/TermWorker.php';
 require 'jobs/AChainJob.php';
 require 'jobs/RChainJob.php';
 require 'jobs/TChainJob.php';
-//
+require 'actions/Ortography.php';
+require 'actions/Uniqueness.php';
 
 //use JonnyW\PhantomJs\Client;
 use Facebook\WebDriver;
@@ -60,9 +61,12 @@ $terms = @$result->records();
 $start = microtime(true);
 $termpool = new Pool(5, TermWorker::class);
 foreach($terms as $term) {
-	$termpool->submit(new AChainJob($term));
-	$termpool->submit(new RChainJob($term));
-	$termpool->submit(new TChainJob($term));
+	$term->label = Ortography($term->label);
+	if(Uniqueness($term->label)) {
+		$termpool->submit(new AChainJob($term));
+		$termpool->submit(new RChainJob($term));
+		$termpool->submit(new TChainJob($term));
+	}
 }
 $termpool->shutdown();
 $stop = microtime(true);
