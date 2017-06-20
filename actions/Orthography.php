@@ -10,5 +10,13 @@
 function Ortography($term) {
 
 	$allowed_charset = "abcdefghijklmnopqrstuvwxyzàáâãäåāăąçćĉċčďđèéêëēĕėęěĝğġģĥħìíîïĩīĭıįĵķĺļľŀłñńņňŋòóôöõøōŏőŕŗřśŝşšţťŧùúûüũůūŭűųŵýÿŷźżžæœĳß'-0123456789 ";
-	return preg_match("/[".$allowed_charset."]/", $term);
+	$term = escapeshellcmd(strtolower($term));
+
+	$matches_charset = preg_match("/[".$allowed_charset."]/", $term);
+
+	if($matches_charset) {
+		return $term;
+	} else {
+		return false;
+	}
 }

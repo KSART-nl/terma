@@ -62,13 +62,18 @@ $start = microtime(true);
 $termpool = new Pool(5, TermWorker::class);
 foreach($terms as $term) {
 
-	if(isset($term->label)) {
-		$term->label = Ortography($term->label);
-		if(Uniqueness($term->label)) {
-			$termpool->submit(new AChainJob($term));
-			$termpool->submit(new RChainJob($term));
-			$termpool->submit(new TChainJob($term));
-		}
+	$termLabel = $term->value('label');
+	$termPrefLabel = $term->value('prefLabel');
+	$termAltLabel = $term->value('altLabel');
+	$termParentString = $term->value('parentString');
+	$termScopeNote = $term->value('scopeNote');
+
+	$termLabel = Ortography($termLabel);
+	if($termLabel != false && Uniqueness($termLabel)) {
+
+		$termpool->submit(new AChainJob($term));
+		$termpool->submit(new RChainJob($term));
+		$termpool->submit(new TChainJob($term));
 	}
 	
 }
