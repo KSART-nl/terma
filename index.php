@@ -57,7 +57,7 @@ s.ns6_value AS scopeNote
 LIMIT 5'
 );
 // Get all records
-$records = $result->getRecords();
+$terms = $result->getRecords();
 
 $start = microtime(true);
 $termpool = new Pool(5, TermWorker::class);
