@@ -11,10 +11,19 @@ class ClassifyJob extends Thread {
 		$start = microtime(true);
 
 		$termLabel = $term->value('label');
+		$termParentString = $term->value('parentString');
 
-		//Wait for Postag labels are available
-		while(!count($this->worker->postag_labels)) {}
-		
+		/*
+			Classify categorically:
+			Classification by Dutch AAT facet
+		*/
+		echo $termParentString;
+
+
+		/*
+			Classify primitively:
+			Classification by text pattern
+		*/
 		$expressions 	= ["discipline","style","movement","proces","method","technique","material","result","company","function","exposure"];
 		//Set default all Expressions
 		$classifications = array_fill_keys($expressions, 0);
@@ -38,6 +47,21 @@ class ClassifyJob extends Thread {
 			$classifications["result"] += 1;
 			$classifications["function"] += 1;
 			$classifications["material"] += 1;
+		}
+
+		/*
+			Classify presumably:
+			Classification by POS label
+		*/
+		while(true) {
+			//Postag labels are available
+			if($this->worker->$postag_status == "Tagged") {
+				print_r($this->worker->$postag_labels); 
+				break;
+			} else if($this->worker->$postag_status == "Untaggable") {
+				//Not possible, to classify this way
+				break;
+			}
 		}
 
 		$this->worker->classifications = $classifications;

@@ -13,6 +13,16 @@ class TermWorker extends Worker {
 	public $definitions = [];
 	public $contexts = [];
 
+	public $postag_status = "Untagged";
+	public $flexion_status = "Unflexioned";
+	public $classify_status = "Unclassified";
+	public $wiki_status = "Unwikied";
+	public $association_status = "Unassociationed";
+	public $kunstgehalt_status = "Unkunstgehalted";
+	public $content_status = "Uncontented";
+	public $defintion_status = "Undefinitioned";
+	public $context_status = "Uncontexted";
+
 	public $term;
 
     public function run() {
