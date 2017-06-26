@@ -31,7 +31,6 @@ class PostagJob extends Thread {
 				$this->worker->postag_labels[$word_key]["label"] = $word["pos"]["@attributes"]["head"];
 				$this->worker->postag_labels[$word_key]["lemma"] = $word["pos"]["@attributes"]["class"];
 			}
-			print_r($this->worker->postag_labels);
 			if(count($words)) {
 				$this->worker->postag_status = "Tagged";
 			} else {
