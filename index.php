@@ -67,11 +67,19 @@ foreach($terms as $term) {
 	$termParentString = $term->value('parentString');
 	$termScopeNote = $term->value('scopeNote');
 
+	$termArray = [
+		"label" => $termLabel,
+		"prefLabel" => $termPrefLabel,
+		"altLabel" => $termAltLabel,
+		"parentString" => $termParentString,
+		"scopeNote" => $termScopeNote
+	];
+
 	$termLabel = OrtographyAction($termLabel);
 	if($termLabel != false && UniquenessAction($termLabel)) {
 
-		$termpool->submit(new PostagJob($term));
-		$termpool->submit(new ClassifyJob($term));
+		$termpool->submit(new PostagJob($termArray));
+		$termpool->submit(new ClassifyJob($termArray));
 
 	}
 	

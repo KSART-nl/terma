@@ -3,15 +3,17 @@
 // Job
 class ClassifyJob extends Thread {
 
-	public function __construct($term) {
-		$this->term = $term;
+	private $termArray;
+
+	public function __construct($termArray) {
+		$this->termArray = $termArray;
 	}
 
 	public function run() {
 		$start = microtime(true);
 
-		$termLabel = $term->value('label');
-		$termParentString = $term->value('parentString');
+		$termLabel = $termArray['label'];
+		$termParentString = $termArray['parentString'];
 
 		/*
 			Classify categorically:
@@ -28,22 +30,22 @@ class ClassifyJob extends Thread {
 		//Set default all Expressions
 		$classifications = array_fill_keys($expressions, 0);
 		//Do singular matching
-		if(preg_match("~^(.*)ism(e)?$~", $payload["term"])) $classifications["movement"] += 1;
-		if(preg_match("~^(.*)istisch(e)?$~", $payload["term"])) $classifications["style"] += 1;
-		if(preg_match("~^(.*)ing$~", $payload["term"])) $classifications["technique"] += 1;
-		if(preg_match("~(.*)( )?kunst$~", $payload["term"])) $classifications["discipline"] += 1;
-		if(preg_match("~(.*)ure(n)?$~", $payload["term"])) $classifications["technique"] += 1;
-		if(preg_match("~(.*)druk$~", $payload["term"])) $classifications["technique"] += 1;
-		if(preg_match("~(.*)erij$~", $payload["term"])) $classifications["company"] += 1;
-		if(preg_match("~(.*)(f|g)ie$~", $payload["term"])) $classifications["discipline"] += 1;
-		if(preg_match("~(.*)(loog|logen)$~", $payload["term"])) $classifications["function"] += 1;
-		if(preg_match("~(.*)(er|ers)$~", $payload["term"])) $classifications["function"] += 1;
+		if(preg_match("~^(.*)ism(e)?$~", $termLabel)) $classifications["movement"] += 1;
+		if(preg_match("~^(.*)istisch(e)?$~", $termLabel)) $classifications["style"] += 1;
+		if(preg_match("~^(.*)ing$~", $termLabel)) $classifications["technique"] += 1;
+		if(preg_match("~(.*)( )?kunst$~", $termLabel)) $classifications["discipline"] += 1;
+		if(preg_match("~(.*)ure(n)?$~", $termLabel)) $classifications["technique"] += 1;
+		if(preg_match("~(.*)druk$~", $termLabel)) $classifications["technique"] += 1;
+		if(preg_match("~(.*)erij$~", $termLabel)) $classifications["company"] += 1;
+		if(preg_match("~(.*)(f|g)ie$~", $termLabel)) $classifications["discipline"] += 1;
+		if(preg_match("~(.*)(loog|logen)$~", $termLabel)) $classifications["function"] += 1;
+		if(preg_match("~(.*)(er|ers)$~", $termLabel)) $classifications["function"] += 1;
 		//Do combinational matching
-		if(preg_match("~^(.*)en$~", $payload["term"])) {
+		if(preg_match("~^(.*)en$~", $termLabel)) {
 			$classifications["technique"] += 1;
 			$classifications["material"] += 1;
 		}
-		if(preg_match("~(.*)(je|tje|pje|kje)$~", $payload["term"])) {
+		if(preg_match("~(.*)(je|tje|pje|kje)$~", $termLabel)) {
 			$classifications["result"] += 1;
 			$classifications["function"] += 1;
 			$classifications["material"] += 1;

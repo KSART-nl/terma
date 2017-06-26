@@ -3,14 +3,16 @@
 // Job
 class PostagJob extends Thread {
 
-	public function __construct($term) {
-		$this->term = $term;
+	private $termArray;
+
+	public function __construct($termArray) {
+		$this->termArray = $termArray;
 	}
 
 	public function run() {
 		$start = microtime(true);
 
-		$termLabel = $term->value('label');
+		$termLabel = $termArray['label'];
 		$termFilename = str_replace(" ", "_", $termLabel);
 
 		file_put_contents("../frogs/".$termFilename.".txt", $termLabel);
