@@ -19,8 +19,9 @@ class ClassifyJob extends Thread {
 			Classify categorically:
 			Classification by Dutch AAT facet
 		*/
-		echo $termParentString;
-
+		$termSplittedString = explode(',', $termParentString);
+		$termLastString = $termSplittedString[count($$termSplittedString) - 1];
+		echo $termLastString.PHP_EOL;
 
 		/*
 			Classify primitively:
