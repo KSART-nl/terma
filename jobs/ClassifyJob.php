@@ -12,6 +12,8 @@ class ClassifyJob extends Thread {
 	public function run() {
 		$start = microtime(true);
 
+		$expressions 	= ["discipline","style","movement","proces","method","technique","material","result","company","function","exposure"];
+
 		$termLabel = $this->termArray['label'];
 		$termParentString = $this->termArray['parentString'];
 
@@ -19,43 +21,64 @@ class ClassifyJob extends Thread {
 			Classify categorically:
 			Classification by Dutch AAT facet
 		*/
+		//Set default all expressions
+		$categories = array_fill_keys($expressions, 0);
 		$termSplittedString = explode(',', $termParentString);
-		$termLastString = $termSplittedString[count($termSplittedString) - 1];
-		echo $termLastString.PHP_EOL;
-
+		$termLastString = trim($termSplittedString[count($termSplittedString) - 1]);
+		$termFacet = str_replace(" Facet", "", $termLastString);
+ 		//Do facet matching, see: https://www.getty.edu/research/tools/vocabularies/aat_in_depth.pdf
+ 		if($termFacet === "Associated Concepts") $categories["movement"] += 1;
+ 		if($termFacet === "Objects" || $termFacet === "Physical Attributes") {
+			$categories["material"] += 1;
+			$categories["result"] += 1;
+		}
+		if($termFacet === "Styles and Periods") {
+			$categories["style"] += 1;
+			$categories["movement"] += 1;
+		}
+		if($termFacet === "Agents") $categories["function"] += 1;
+		if($termFacet === "Activities") {
+			$categories["technique"] += 1;
+			$categories["discipline"] += 1;
+			$categories["method"] += 1;
+			$categories["proces"] += 1;
+		}		
+		if($termFacet === "Materials") $categories["material"] += 1;
+		
 		/*
 			Classify primitively:
 			Classification by text pattern
-		*/
-		$expressions 	= ["discipline","style","movement","proces","method","technique","material","result","company","function","exposure"];
-		//Set default all Expressions
-		$classifications = array_fill_keys($expressions, 0);
+		*/		
+		//Set default all expressions
+		$primitives = array_fill_keys($expressions, 0);
 		//Do singular matching
-		if(preg_match("~^(.*)ism(e)?$~", $termLabel)) $classifications["movement"] += 1;
-		if(preg_match("~^(.*)istisch(e)?$~", $termLabel)) $classifications["style"] += 1;
-		if(preg_match("~^(.*)ing$~", $termLabel)) $classifications["technique"] += 1;
-		if(preg_match("~(.*)( )?kunst$~", $termLabel)) $classifications["discipline"] += 1;
-		if(preg_match("~(.*)ure(n)?$~", $termLabel)) $classifications["technique"] += 1;
-		if(preg_match("~(.*)druk$~", $termLabel)) $classifications["technique"] += 1;
-		if(preg_match("~(.*)erij$~", $termLabel)) $classifications["company"] += 1;
-		if(preg_match("~(.*)(f|g)ie$~", $termLabel)) $classifications["discipline"] += 1;
-		if(preg_match("~(.*)(loog|logen)$~", $termLabel)) $classifications["function"] += 1;
-		if(preg_match("~(.*)(er|ers)$~", $termLabel)) $classifications["function"] += 1;
+		if(preg_match("~^(.*)ism(e)?$~", $termLabel)) $primitives["movement"] += 1;
+		if(preg_match("~^(.*)istisch(e)?$~", $termLabel)) $primitives["style"] += 1;
+		if(preg_match("~^(.*)ing$~", $termLabel)) $primitives["technique"] += 1;
+		if(preg_match("~(.*)( )?kunst$~", $termLabel)) $primitives["discipline"] += 1;
+		if(preg_match("~(.*)ure(n)?$~", $termLabel)) $primitives["technique"] += 1;
+		if(preg_match("~(.*)druk$~", $termLabel)) $primitives["technique"] += 1;
+		if(preg_match("~(.*)erij$~", $termLabel)) $primitives["company"] += 1;
+		if(preg_match("~(.*)(f|g)ie$~", $termLabel)) $primitives["discipline"] += 1;
+		if(preg_match("~(.*)(loog|logen)$~", $termLabel)) $primitives["function"] += 1;
+		if(preg_match("~(.*)(er|ers)$~", $termLabel)) $primitives["function"] += 1;
 		//Do combinational matching
 		if(preg_match("~^(.*)en$~", $termLabel)) {
-			$classifications["technique"] += 1;
-			$classifications["material"] += 1;
+			$primitives["technique"] += 1;
+			$primitives["material"] += 1;
 		}
 		if(preg_match("~(.*)(je|tje|pje|kje)$~", $termLabel)) {
-			$classifications["result"] += 1;
-			$classifications["function"] += 1;
-			$classifications["material"] += 1;
+			$primitives["result"] += 1;
+			$primitives["function"] += 1;
+			$primitives["material"] += 1;
 		}
 
 		/*
 			Classify presumably:
 			Classification by POS label
 		*/
+		//Set default all expressions
+		$assumptions = array_fill_keys($expressions, 0);
 		while(true) {
 			//Postag labels are available
 			if($this->worker->postag_status === "Tagged") {
@@ -65,11 +88,18 @@ class ClassifyJob extends Thread {
 				//Not possible, to classify this way
 				break;
 			}
+			//$assumptions
 		}
 
-		$this->worker->classifications = $classifications;
+		//Set classifications with method results
+		$this->worker->classifications = (array)[
+			"categories" => $categories,
+			"primitives" => $primitives,
+			"assumptions" => $assumptions,
+			];
+		print_r($this->worker->classifications);
 
 		$stop = microtime(true);
-		echo "From PostagJob ".(String)($stop - $start).PHP_EOL;
+		echo "From ClassifyJob ".(String)($stop - $start).PHP_EOL;
 	}
 }
