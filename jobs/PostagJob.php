@@ -13,13 +13,12 @@ class PostagJob extends Thread {
 		$termLabel = $term->value('label');
 		$termFilename = str_replace(" ", "_", $termLabel);
 
-		$create_term_file = "echo '".$termLabel."' > frogs/".$termFilename.".txt";
-		$frog_term_file = $lamachine_path."/lamachine/bin/frog -t frogs/".$termFilename.".txt -X frogs/".$termFilename.".xml";
-		shell_exec($create_term_file);
+		file_put_contents("../frogs/".$termFilename.".txt", $termLabel);
+		$frog_term_file = $lamachine_path."/lamachine/bin/frog -t ../frogs/".$termFilename.".txt -X ../frogs/".$termFilename.".xml";
 		shell_exec($frog_term_file);
 
-		if(file_exists("frogs/".$termFilename.".xml")) {
-			$folia = file_get_contents("frogs/".$termFilename.".xml");
+		if(file_exists("../frogs/".$termFilename.".xml")) {
+			$folia = file_get_contents("../frogs/".$termFilename.".xml");
 			$sxe = new SimpleXMLElement($folia);
 			$sxe->registerXPathNamespace('f', 'http://ilk.uvt.nl/folia');
 			$words = $sxe->xpath('//f:w');

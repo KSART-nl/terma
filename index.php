@@ -14,9 +14,6 @@ require 'selenium.php';
 
 //Workers, jobs and actions
 require 'workers/TermWorker.php';
-require 'jobs/AChainJob.php';
-require 'jobs/RChainJob.php';
-require 'jobs/TChainJob.php';
 require 'jobs/PostagJob.php';
 require 'jobs/ClassifyJob.php';
 require 'actions/OrthographyAction.php';
@@ -76,9 +73,6 @@ foreach($terms as $term) {
 		$termpool->submit(new PostagJob($term));
 		$termpool->submit(new ClassifyJob($term));
 
-		$termpool->submit(new AChainJob($term));
-		$termpool->submit(new RChainJob($term));
-		$termpool->submit(new TChainJob($term));
 	}
 	
 }
