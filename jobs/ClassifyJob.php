@@ -57,10 +57,10 @@ class ClassifyJob extends Thread {
 		*/
 		while(true) {
 			//Postag labels are available
-			if($this->worker->postag_status == "Tagged") {
+			if($this->worker->postag_status === "Tagged") {
 				print_r($this->worker->postag_labels); 
 				break;
-			} else if($this->worker->postag_status == "Untaggable") {
+			} else if($this->worker->postag_status === "Untaggable") {
 				//Not possible, to classify this way
 				break;
 			}

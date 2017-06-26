@@ -28,8 +28,15 @@ class PostagJob extends Thread {
 			$words = $sxe->xpath('//f:w');
 			$words = json_decode(json_encode($words),TRUE);
 			foreach ($words as $word_key => $word) {
-				$this->worker->postag_labels[$word_key]["label"] = $word["pos"]["@attributes"]["head"];
-				$this->worker->postag_labels[$word_key]["lemma"] = $word["pos"]["@attributes"]["class"];
+				$this->worker->postag_labels = array_merge(
+					$this->worker->postag_labels,
+					//Prevent Volatile, cast to array
+					(array)[
+						"word" => $word_key,
+						"label" => $word["pos"]["@attributes"]["head"],
+						"lemma" => $word["pos"]["@attributes"]["class"]
+					]
+				);
 			}
 			if(count($words)) {
 				$this->worker->postag_status = "Tagged";
