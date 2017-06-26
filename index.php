@@ -58,7 +58,7 @@ LIMIT 5'
 $terms = @$result->records();
 
 $start = microtime(true);
-$termpool = new Pool(5, TermWorker::class);
+$termpool = new Pool(1, TermWorker::class);
 foreach($terms as $term) {
 
 	$termLabel = $term->value('label');
