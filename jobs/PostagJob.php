@@ -4,9 +4,11 @@
 class PostagJob extends Thread {
 
 	private $termArray;
+	private $lamachinePath;
 
-	public function __construct($termArray) {
-		$this->termArray = $termArray;
+	public function __construct($payload) {
+		$this->termArray = $payload["termArray"];
+		$this->lamachinePath = $payload["lamachinePath"];
 	}
 
 	public function run() {
@@ -16,7 +18,7 @@ class PostagJob extends Thread {
 		$termFilename = str_replace(" ", "_", $termLabel);
 
 		file_put_contents("../frogs/".$termFilename.".txt", $termLabel);
-		$frog_term_file = $lamachine_path."/lamachine/bin/frog -t ../frogs/".$termFilename.".txt -X ../frogs/".$termFilename.".xml";
+		$frog_term_file = $this->lamachinePath."/lamachine/bin/frog -t ../frogs/".$termFilename.".txt -X ../frogs/".$termFilename.".xml";
 		shell_exec($frog_term_file);
 
 		if(file_exists("../frogs/".$termFilename.".xml")) {

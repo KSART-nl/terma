@@ -78,7 +78,7 @@ foreach($terms as $term) {
 	$termLabel = OrtographyAction($termLabel);
 	if($termLabel != false && UniquenessAction($termLabel)) {
 
-		$termpool->submit(new PostagJob($termArray));
+		$termpool->submit(new PostagJob(["termArray" => $termArray, "lamachinePath" => $lamachine_path]));
 		$termpool->submit(new ClassifyJob($termArray));
 
 	}
