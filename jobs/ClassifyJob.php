@@ -20,7 +20,7 @@ class ClassifyJob extends Thread {
 			Classification by Dutch AAT facet
 		*/
 		$termSplittedString = explode(',', $termParentString);
-		$termLastString = $termSplittedString[count($$termSplittedString) - 1];
+		$termLastString = $termSplittedString[count($termSplittedString) - 1];
 		echo $termLastString.PHP_EOL;
 
 		/*
