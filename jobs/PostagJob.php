@@ -30,7 +30,7 @@ class PostagJob extends Thread {
 			foreach ($words as $word_key => $word) {
 				$this->worker->postag_labels = array_merge(
 					$this->worker->postag_labels,
-					//Prevent Volatile, cast to array
+					//Prevent Volatile object, cast to array
 					(array)[
 						"word" => $word_key,
 						"label" => $word["pos"]["@attributes"]["head"],

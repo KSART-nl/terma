@@ -12,8 +12,8 @@ class ClassifyJob extends Thread {
 	public function run() {
 		$start = microtime(true);
 
-		$termLabel = $termArray['label'];
-		$termParentString = $termArray['parentString'];
+		$termLabel = $this->termArray['label'];
+		$termParentString = $this->termArray['parentString'];
 
 		/*
 			Classify categorically:
