@@ -14,7 +14,7 @@ class PostagJob extends Thread {
 	public function run() {
 		$start = microtime(true);
 
-		$termLabel = $termArray['label'];
+		$termLabel = $this->termArray['label'];
 		$termFilename = str_replace(" ", "_", $termLabel);
 
 		file_put_contents("../frogs/".$termFilename.".txt", $termLabel);
