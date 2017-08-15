@@ -104,7 +104,8 @@ echo $cql."<br>";
 			$primitives["material"] += 1;
 		}
 
-		$resultTerm->context = "";
+		preg_match('/\((.*?)\)/', $termLabel, $contextMatch);
+		$resultTerm->context = isset($contextMatch[0]) ? $contextMatch[0] : "";
 
 		$resultTerm->discipline_categorical_prob = $categories["discipline"] / $expression_count;
 		$resultTerm->discipline_primitive_prob = $primitives["discipline"] / $expression_count;
