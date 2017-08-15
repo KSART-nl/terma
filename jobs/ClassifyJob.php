@@ -92,12 +92,13 @@ class ClassifyJob extends Thread {
 		}
 
 		//Set classifications with method results
-		$this->worker->classifications = (array)[
+		$classifications = (array)[
 			"categories" => $categories,
 			"primitives" => $primitives,
-			"assumptions" => $assumptions,
+			"assumptions" => $assumptions
 			];
-		print_r($this->worker->classifications);
+		$this->worker->classifications = $classifications;
+		print_r($classifications);
 
 		$stop = microtime(true);
 		echo "From ClassifyJob ".(String)($stop - $start).PHP_EOL;
