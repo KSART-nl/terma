@@ -58,7 +58,7 @@ echo $cql."<br>";
 
 		//Classify presumably
 		$categories = array_fill_keys($expressions, 0);
-		$termSplittedString = explode(',', $termParentString);
+		$termSplittedString = explode(',', $resultTerm->parentString);
 		$termLastString = trim($termSplittedString[count($termSplittedString) - 1]);
 		$termFacet = str_replace(" Facet", "", $termLastString);
  		//Do facet matching, see: https://www.getty.edu/research/tools/vocabularies/aat_in_depth.pdf
@@ -145,8 +145,6 @@ echo $cql."<br>";
 		$resultTerm->subject_combined_prob = ($categories["subject"] + $primitives[""]) / 2;
 
 		$resultTerm->save();
-
-
 
 	}
 
