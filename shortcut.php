@@ -1,5 +1,8 @@
 <?php
 
+error_reporting(E_ALL);
+ini_set("display_errors", 1);
+
 require 'vendor/autoload.php';
 require 'config/env.php';
 require 'start.php';
@@ -10,11 +13,6 @@ $neo4j = ClientBuilder::create()
     ->addConnection('default', $neo4j_default_connection) // HTTP connection config (port is optional)
     ->addConnection('bolt', $neo4j_bolt_connection) // BOLT connection config (port is optional)
     ->build();
-
-$limitation = 10;
-$required_loops = ceil($terms_count / $limitation);
-$expressions 	= ["discipline","style","movement","proces","method","technique","material","result","company","function","exposure","subject"];
-$expression_count = count($expressions);
 
 // Result contains a collection (array) of Record objects
 $count_result = @$neo4j->run(
@@ -27,7 +25,10 @@ count(r) AS count
 // Get count record
 $terms_count = @$count_result->getRecord();
 $terms_count = $terms_count->value('count'); //27643
-
+$limitation = 10;
+$required_loops = ceil($terms_count / $limitation);
+$expressions 	= ["discipline","style","movement","proces","method","technique","material","result","company","function","exposure","subject"];
+$expression_count = count($expressions);
 
 for ($current_loop = 0; $current_loop <= $required_loops; $current_loop++) {
 
