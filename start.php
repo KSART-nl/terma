@@ -13,9 +13,12 @@ if(!Capsule::schema("result_terms")->hasTable('terms')) {
 	Capsule::schema("result_terms")->create("terms", function($table) {
 		$table->increments('id');
 
-		$table->text('term');
-		$table->text('context');
-
+		$table->text('label');
+		$table->text('prefLabel');
+		$table->text('altLabel');
+		$table->text('parentString');
+		$table->text('scopeNote');	
+		
 		$table->timestamps();
 	});
 }
