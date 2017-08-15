@@ -46,7 +46,13 @@ echo $cql."<br>";
 	$terms = @$term_result->records();
 
 	foreach ($terms as $term_key => $term) {
-		echo $term->value('label').PHP_EOL;
+		$resultTerm = new ResultTerm();
+		$resultTerm->label = $term->value('label');
+		$resultTerm->prefLabel = $term->value('prefLabel');
+		$resultTerm->altLabel = $term->value('altLabel');
+		$resultTerm->parentString = $term->value('parentString');
+		$resultTerm->scopeNote = $term->value('scopeNote');
+		$resultTerm->save();
 	}
 
 }
