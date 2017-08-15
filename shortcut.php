@@ -26,7 +26,7 @@ $terms_count = $terms_count->value('count'); //27643
 $limitation = 10;
 $required_loops = ceil($terms_count / $limitation);
 
-for ($current_loop = 0; $current_loop < $current_loop; $current_loop++) {
+for ($current_loop = 0; $current_loop < $required_loops; $current_loop++) {
 	
 	// Select ten
 	$cql = 'MATCH (s:ns0_ScopeNote)<-[rel:ns1_scopeNote]-(r:Resource)
