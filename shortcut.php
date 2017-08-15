@@ -2,6 +2,7 @@
 
 require 'vendor/autoload.php';
 require 'config/env.php';
+require 'start.php';
 
 use GraphAware\Neo4j\Client\ClientBuilder;
 
