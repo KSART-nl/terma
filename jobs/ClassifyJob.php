@@ -12,7 +12,7 @@ class ClassifyJob extends Thread {
 	public function run() {
 		$start = microtime(true);
 
-		$expressions 	= ["discipline","style","movement","proces","method","technique","material","result","company","function","exposure"];
+		$expressions 	= ["discipline","style","movement","proces","method","technique","material","result","company","function","exposure","subject"];
 
 		$termLabel = $this->termArray['label'];
 		$termParentString = $this->termArray['parentString'];
