@@ -38,8 +38,8 @@ r.ns1_altLabel AS altLabel,
 r.ns0_parentString AS parentString,
 s.ns6_value AS scopeNote
 ORDER BY r.ns2_label
-SKIP '.$current_loop.'
-LIMIT 10';
+SKIP '.($current_loop*$limitation).'
+LIMIT '.$limitation;
 echo $cql."<br>";
 	$term_result = @$neo4j->run($cql);
 	$terms = @$term_result->records();
