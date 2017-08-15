@@ -84,28 +84,28 @@ echo $cql."<br>";
 		//Classify primitively
 		$primitives = array_fill_keys($expressions, 0);
 		//Do singular matching
-		if(preg_match("~^(.*)ism(e)?$~", $termLabel)) $primitives["movement"] += 1;
-		if(preg_match("~^(.*)istisch(e)?$~", $termLabel)) $primitives["style"] += 1;
-		if(preg_match("~^(.*)ing$~", $termLabel)) $primitives["technique"] += 1;
-		if(preg_match("~(.*)( )?kunst$~", $termLabel)) $primitives["discipline"] += 1;
-		if(preg_match("~(.*)ure(n)?$~", $termLabel)) $primitives["technique"] += 1;
-		if(preg_match("~(.*)druk$~", $termLabel)) $primitives["technique"] += 1;
-		if(preg_match("~(.*)erij$~", $termLabel)) $primitives["company"] += 1;
-		if(preg_match("~(.*)(f|g)ie$~", $termLabel)) $primitives["discipline"] += 1;
-		if(preg_match("~(.*)(loog|logen)$~", $termLabel)) $primitives["function"] += 1;
-		if(preg_match("~(.*)(er|ers)$~", $termLabel)) $primitives["function"] += 1;
+		if(preg_match("~^(.*)ism(e)?$~", $resultTerm->label)) $primitives["movement"] += 1;
+		if(preg_match("~^(.*)istisch(e)?$~", $resultTerm->label)) $primitives["style"] += 1;
+		if(preg_match("~^(.*)ing$~", $resultTerm->label)) $primitives["technique"] += 1;
+		if(preg_match("~(.*)( )?kunst$~", $resultTerm->label)) $primitives["discipline"] += 1;
+		if(preg_match("~(.*)ure(n)?$~", $resultTerm->label)) $primitives["technique"] += 1;
+		if(preg_match("~(.*)druk$~", $resultTerm->label)) $primitives["technique"] += 1;
+		if(preg_match("~(.*)erij$~", $resultTerm->label)) $primitives["company"] += 1;
+		if(preg_match("~(.*)(f|g)ie$~", $resultTerm->label)) $primitives["discipline"] += 1;
+		if(preg_match("~(.*)(loog|logen)$~", $resultTerm->label)) $primitives["function"] += 1;
+		if(preg_match("~(.*)(er|ers)$~", $resultTerm->label)) $primitives["function"] += 1;
 		//Do combinational matching
-		if(preg_match("~^(.*)en$~", $termLabel)) {
+		if(preg_match("~^(.*)en$~", $resultTerm->label)) {
 			$primitives["technique"] += 1;
 			$primitives["material"] += 1;
 		}
-		if(preg_match("~(.*)(je|tje|pje|kje)$~", $termLabel)) {
+		if(preg_match("~(.*)(je|tje|pje|kje)$~", $resultTerm->label)) {
 			$primitives["result"] += 1;
 			$primitives["function"] += 1;
 			$primitives["material"] += 1;
 		}
 
-		preg_match('/\((.*?)\)/', $termLabel, $contextMatch);
+		preg_match('/\((.*?)\)/', $resultTerm->label, $contextMatch);
 		$resultTerm->context = isset($contextMatch[0]) ? $contextMatch[0] : "";
 
 		$resultTerm->discipline_categorical_prob = $categories["discipline"] / $expression_count;
