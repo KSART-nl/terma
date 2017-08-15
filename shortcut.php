@@ -11,7 +11,7 @@ $neo4j = ClientBuilder::create()
     ->build();
 
 // Result contains a collection (array) of Record objects
-$result = @$neo4j->run(
+$count_result = @$neo4j->run(
 'MATCH (s:ns0_ScopeNote)<-[rel:ns1_scopeNote]-(r:Resource)
 WHERE s.ns6_value IS NOT NULL AND r.ns2_label IS NOT NULL
 RETURN
@@ -20,7 +20,7 @@ count(r) AS count
 );
 
 // Get count record
-$terms_count = @$result->getRecord();
+$terms_count = @$count_result->getRecord();
 $terms_count = $terms_count->value('count'); //27643
 
 $limitation = 10;
@@ -41,7 +41,12 @@ ORDER BY r.ns2_label
 SKIP '.$current_loop.'
 LIMIT 10';
 echo $cql."<br>";
-	//$result = @$neo4j->run($cql);
+	$term_result = @$neo4j->run($cql);
+	$terms = @$term_result->records();
+
+	foreach ($terms as $term_key => $term) {
+		echo $term->value('label').PHP_EOL;
+	}
 
 }
 
