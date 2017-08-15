@@ -27,7 +27,7 @@ $limitation = 10;
 $required_loops = ceil($terms_count / $limitation);
 
 for ($current_loop = 0; $current_loop < $required_loops; $current_loop++) {
-	
+
 	// Select ten
 	$cql = 'MATCH (s:ns0_ScopeNote)<-[rel:ns1_scopeNote]-(r:Resource)
 WHERE s.ns6_value IS NOT NULL AND r.ns2_label IS NOT NULL
@@ -38,10 +38,10 @@ r.ns1_altLabel AS altLabel,
 r.ns0_parentString AS parentString,
 s.ns6_value AS scopeNote
 ORDER BY r.ns2_label
-SKIP 10
+SKIP '.$current_loop.'
 LIMIT 10';
 echo $cql."<br>";
-	$result = @$neo4j->run($cql);
+	//$result = @$neo4j->run($cql);
 
 }
 
