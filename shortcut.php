@@ -47,11 +47,11 @@ echo $cql."<br>";
 
 	foreach ($terms as $term_key => $term) {
 		$resultTerm = new ResultTerm();
-		$resultTerm->label = $term->value('label');
-		$resultTerm->prefLabel = $term->value('prefLabel');
-		$resultTerm->altLabel = $term->value('altLabel');
-		$resultTerm->parentString = $term->value('parentString');
-		$resultTerm->scopeNote = $term->value('scopeNote');
+		$resultTerm->label = isset($term->value('label')) ? $term->value('label') : "";
+		$resultTerm->prefLabel = isset($term->value('prefLabel')) ? $term->value('prefLabel') : "";
+		$resultTerm->altLabel = isset($term->value('altLabel')) ? $term->value('altLabel') : "";
+		$resultTerm->parentString = isset($term->value('parentString')) ? $term->value('parentString') : "";
+		$resultTerm->scopeNote = isset($term->value('scopeNote')) ? $term->value('scopeNote') : "";
 		$resultTerm->save();
 	}
 
