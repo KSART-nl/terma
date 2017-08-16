@@ -106,7 +106,7 @@ echo $cql."<br>";
 				$primitives["material"] += 1;
 			}
 
-			preg_match('/\((.*?)\)/', $resultTerm->label, $contextMatch);
+			preg_match('/\((.*?)\)/', $term->value('label'), $contextMatch);
 			$resultTerm->context = isset($contextMatch[0]) ? str_replace(["(",")"], "", $contextMatch[0]) : "";
 
 			$resultTerm->discipline_categorical_prob = $categories["discipline"] / $expression_count;
