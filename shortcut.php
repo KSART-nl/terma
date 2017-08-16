@@ -52,7 +52,7 @@ echo $cql."<br>";
 
 		if( strpos(@$term->value('label'), "<") === false ) {
 			$resultTerm = new ResultTerm();
-			$resultTerm->label = @$term->value('label') !== null ? $term->value('label') : "";
+			$resultTerm->label = @$term->value('label') !== null ? trim(preg_replace("/\([^)]+\)/","",$term->value('label'))) : "";
 			$resultTerm->prefLabel = @$term->value('prefLabel') !== null ? $term->value('prefLabel') : "";
 			$resultTerm->altLabel = @$term->value('altLabel') !== null ? $term->value('altLabel') : "";
 			$resultTerm->parentString = @$term->value('parentString') !== null ? $term->value('parentString') : "";
