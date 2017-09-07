@@ -12,7 +12,6 @@
         "zoonman/pixabay-php-api": "^1.0",
         "emanueleminotto/simple-html-dom": "^1.5",
         "facebook/webdriver": "^1.4",
-        "jonnyw/php-phantomjs": "4.*",
         "graphaware/neo4j-php-client": "^4.0"
     },
     "autoload": {

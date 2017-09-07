@@ -18,6 +18,7 @@ if(!Capsule::schema("result_terms")->hasTable('terms')) {
 		$table->text('altLabel');
 		$table->text('parentString');
 		$table->text('scopeNote');
+		//$table->text('facet');
 		$table->text('context');
 
 		$table->text('discipline_categorical_prob');
