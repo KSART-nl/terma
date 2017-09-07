@@ -6,10 +6,20 @@ ini_set("display_errors", 1);
 require 'vendor/autoload.php';
 require 'config/env.php';
 require 'start.php';
-
 require 'functions.php';
 
+use Facebook\WebDriver;
+use Facebook\WebDriver\Remote\DesiredCapabilities;
+use Facebook\WebDriver\Remote\RemoteWebDriver;
 use GraphAware\Neo4j\Client\ClientBuilder;
+//Selenium server url
+$host = 'http://localhost:4444/wd/hub';
+$desired_capabilities = DesiredCapabilities::firefox();
+//Run headless Firefox
+$driver = RemoteWebDriver::create($host, $desired_capabilities);
+//Activate LaMachine virtual env
+shell_exec('. '.$lamachine_path.'/lamachine/bin/activate');
+
 
 $neo4j = ClientBuilder::create()
     ->addConnection('default', $neo4j_default_connection) // HTTP connection config (port is optional)
@@ -63,15 +73,52 @@ echo $cql."<br>";
 			preg_match('/\((.*?)\)/', $term->value('label'), $contextMatch);
 			$resultTerm->context = isset($contextMatch[0]) ? str_replace(["(",")"], "", $contextMatch[0]) : "";
 
-			//Classify presumably
-			$categories = classify_presumably($resultTerm->parentString, $expressions);
+			//Classify categorically
+			$categories = classify_categorically($resultTerm->parentString, $expressions);
 			//Classify primitively
 			$primitives = classify_primitively($resultTerm->label, $expressions);
 			//Classify all combined
 			$resultTerm = classify_all($resultTerm, $categories, $primitives);
 			$resultTerm->save();
 
-			
+			$tagged_words = postag($resultTerm->label);
+			$wikis = get_wiki_pages($resultTerm->label);
+			$woordenlijst_html = get_woordenlijst_html($resultTerm->label);
+			$woordenboek_html = get_woordenboek_html($resultTerm->label);
+
+			foreach ($tagged_words as $tagged_word_key => $tagged_word) {
+				$postag = new PosTag();
+				$postag->term = $resultTerm->label;
+				$postag->tag_label = $tagged_word["label"];
+				$postag->tag_label_full = $tagged_word["label_full"];
+				$postag->lemma = $tagged_word["lemma"];
+				$postag->prob = $tagged_word["prob"];
+				$postag->save();
+			}
+			foreach ($wikis as $wiki_key => $wiki) {
+				$wikipage = new WikiPage();
+				$wikipage->term = $resultTerm->label;
+				$wikipage->page_id = $wiki["page_id"];
+				$wikipage->page_url = $wiki["page_url"];
+				$wikipage->page_text = $wiki["page_text"];
+				$wikipage->save();
+			}
+			$flexion_woordenlijst = new Flexion();
+			$flexion_woordenlijst->term = $resultTerm->label;
+			$flexion_woordenlijst->original_html = $woordenlijst_html["original_html"];
+			$flexion_woordenlijst->source_url = $woordenlijst_html["source_url"];
+			$flexion_woordenlijst->save();
+
+			$flexion_woordenboek = new Flexion();
+			$flexion_woordenboek->term = $resultTerm->label;
+			$flexion_woordenboek->original_html = $woordenboek_html["original_html"];
+			$flexion_woordenboek->source_url = $woordenboek_html["source_url"];
+			$flexion_woordenboek->save();
+
+			exit();
+			//parse html
+			//kunstgehalt, associations from wiki
+
 		}
 
 	}

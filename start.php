@@ -62,6 +62,46 @@ if(!Capsule::schema("result_terms")->hasTable('terms')) {
 	});
 }
 
+// wikis: term, page_id, page_url, page_text -> kunstgehalt, associations
+if(!Capsule::schema("result_terms")->hasTable('wikis')) {
+	Capsule::schema("result_terms")->create("wikis", function($table) {
+		$table->increments('id');
+
+		$table->text('term');
+		$table->text('page_id');
+		$table->text('page_url');
+		$table->text('page_text');
+
+		$table->timestamps();
+	}
+}
+// postags: term, tag_label, lemma, prob
+if(!Capsule::schema("result_terms")->hasTable('postags')) {
+	Capsule::schema("result_terms")->create("postags", function($table) {
+		$table->increments('id');
+
+		$table->text('term');
+		$table->text('tag_label');
+		$table->text('tag_label_full');
+		$table->text('lemma');
+		$table->text('prob');
+
+		$table->timestamps();
+	}
+}
+// flexions: term, original_html, source_url -> verbas, nominas, generas, adjectivas (unique_flexions)
+if(!Capsule::schema("result_terms")->hasTable('flexions')) {
+	Capsule::schema("result_terms")->create("flexions", function($table) {
+		$table->increments('id');
+
+		$table->text('term');
+		$table->text('original_html');
+		$table->text('source_url');
+
+		$table->timestamps();
+	}
+}
+
 if(!Capsule::schema("result_terms")->hasTable('adjectivas')) {
 	Capsule::schema("result_terms")->create("adjectivas", function($table) {
 		$table->increments('id');
