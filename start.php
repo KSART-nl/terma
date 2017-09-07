@@ -70,6 +70,7 @@ if(!Capsule::schema("result_terms")->hasTable('wikis')) {
 		$table->text('term');
 		$table->text('page_id');
 		$table->text('page_url');
+		$table->text('page_html');
 		$table->text('page_text');
 
 		$table->timestamps();

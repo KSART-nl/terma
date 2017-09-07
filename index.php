@@ -100,6 +100,7 @@ echo $cql."<br>";
 				$wikipage->term = $resultTerm->label;
 				$wikipage->page_id = $wiki["page_id"];
 				$wikipage->page_url = $wiki["page_url"];
+				$wikipage->page_html = $wiki["page_html"];
 				$wikipage->page_text = $wiki["page_text"];
 				$wikipage->save();
 			}

@@ -49,7 +49,7 @@ function classify_categorically($parent_string, $expressions) {
 		$categories["method"] += 1; // 0.25 / 4.75
 		$categories["proces"] += 1; // 0.25 / 4.75
 	}		
-	if($termFacet === "Materials") $categories["material"] += 1;
+	if($termFacet === "Materials") $categories["material"] += 1;  // 1 / 4.75
 	if($termFacet === "Brand Names") {
 		$categories["subject"] += 1; // 0.5 / 4.75
 		$categories["material"] += 1; // 0.5 / 4.75
@@ -127,7 +127,7 @@ function classify_all($resultTerm, $categories, $primitives) {
 }
 
 function get_woordenlijst_html($term, $driver) {
-	$target_url = "http://woordenlijst.org/#/?q=".$term;
+	$target_url = "http://woordenlijst.org/#/?q=".urlencode($term);
 	$driver->get($target_url);
 	$driver->wait(0, 10);
 	$driver->manage()->timeouts()->implicitlyWait(10);
@@ -227,7 +227,8 @@ function get_wiki_pages($term) {
 
 						$pages_text[] = [
 							"page_id" => $page["pageid"],
-							"page_url" => $pageurl;
+							"page_url" => $pageurl,
+							"page_html" => $pageparsed["text"]["*"],
 							"page_text" => trim($pagestripped)
 						];
 					}
