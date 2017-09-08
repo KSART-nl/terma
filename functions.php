@@ -1,11 +1,11 @@
 <?php
 
-function postag($term) {
+function postag($term, $lamachine_path) {
 	$tags = [];
 
 	$term_file_name = str_replace(" ", "_", $term);
 	$create_term_file = "echo '".$term."' > frogs/".$term_file_name.".txt";
-	$frog_term_file = "/lamachine/bin/frog -t frogs/".$term_file_name.".txt -X frogs/".$term_file_name.".xml";
+	$frog_term_file = ". ".$lamachine_path."/lamachine/bin/frog -t frogs/".$term_file_name.".txt -X frogs/".$term_file_name.".xml";
 	shell_exec($create_term_file);
 	shell_exec($frog_term_file);
 	if(file_exists("frogs/".$term_file_name.".xml")) {

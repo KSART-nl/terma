@@ -81,9 +81,9 @@ echo $cql."<br>";
 			$resultTerm = classify_all($resultTerm, $categories, $primitives);
 			$resultTerm->save();
 
-			$tagged_words = postag($resultTerm->label);
+			$tagged_words = postag($resultTerm->label, $lamachine_path);
 			$wikis = get_wiki_pages($resultTerm->label);
-			$woordenlijst_html = get_woordenlijst_html($resultTerm->label);
+			$woordenlijst_html = get_woordenlijst_html($resultTerm->label, $driver);
 			$woordenboek_html = get_woordenboek_html($resultTerm->label);
 
 			foreach ($tagged_words as $tagged_word_key => $tagged_word) {
