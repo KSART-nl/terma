@@ -116,12 +116,15 @@ echo $cql."<br>";
 			$flexion_woordenboek->source_url = $woordenboek_html["source_url"];
 			$flexion_woordenboek->save();
 
-			exit();
+			
 			//parse html
 			//kunstgehalt, associations from wiki
 
 		}
 
 	}
+
+	exit();
+	//End of 10
 
 }
