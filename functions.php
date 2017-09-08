@@ -33,26 +33,26 @@ function classify_categorically($parent_string, $expressions) {
 	$termFacet = str_replace(" Facet", "", $termLastString);
 
 	//Do facet matching, see: getty.edu/research/tools/vocabularies/aat_in_depth.pdf
-	if($termFacet === "Associated Concepts") $categories["movement"] += 1; // 1 / 4.75
+	if($termFacet === "Associated Concepts") $categories["movement"] += (1 / 4.75);
 	if($termFacet === "Objects" || $termFacet === "Physical Attributes") {
-		$categories["material"] += 1; // 0.5 / 4.75
-		$categories["result"] += 1; // 0.5 / 4.75
+		$categories["material"] += (0.5 / 4.75);
+		$categories["result"] += (0.5 / 4.75);
 	}
 	if($termFacet === "Styles and Periods") {
-		$categories["style"] += 1; // 0.5 / 4.75
-		$categories["movement"] += 1; // 0.5 / 4.75
+		$categories["style"] += (0.5 / 4.75);
+		$categories["movement"] += (0.5 / 4.75);
 	}
-	if($termFacet === "Agents") $categories["function"] += 1;  // 1 / 4.75
+	if($termFacet === "Agents") $categories["function"] += (1 / 4.75);
 	if($termFacet === "Activities") {
-		$categories["technique"] += 1; // 0.25 / 4.75
-		$categories["discipline"] += 1; // 0.25 / 4.75
-		$categories["method"] += 1; // 0.25 / 4.75
-		$categories["proces"] += 1; // 0.25 / 4.75
+		$categories["technique"] += (0.25 / 4.75);
+		$categories["discipline"] += (0.25 / 4.75);
+		$categories["method"] += (0.25 / 4.75);
+		$categories["proces"] += (0.25 / 4.75);
 	}		
-	if($termFacet === "Materials") $categories["material"] += 1;  // 1 / 4.75
+	if($termFacet === "Materials") $categories["material"] += (1 / 4.75);
 	if($termFacet === "Brand Names") {
-		$categories["subject"] += 1; // 0.5 / 4.75
-		$categories["material"] += 1; // 0.5 / 4.75
+		$categories["subject"] += (0.5 / 4.75);
+		$categories["material"] += (0.5 / 4.75);
 	}
 
 	return $categories;
@@ -86,41 +86,41 @@ function classify_primitively($label, $expressions) {
 }
 
 function classify_all($resultTerm, $categories, $primitives) {
-	$resultTerm->discipline_categorical_prob = $categories["discipline"] / $expression_count;
-	$resultTerm->discipline_primitive_prob = $primitives["discipline"] / $expression_count;
+	$resultTerm->discipline_categorical_prob = $categories["discipline"];
+	$resultTerm->discipline_primitive_prob = $primitives["discipline"];
 	$resultTerm->discipline_combined_prob = ($categories["discipline"] + $primitives["discipline"]) / 2;
-	$resultTerm->style_categorical_prob = $categories["style"] / $expression_count;
-	$resultTerm->style_primitive_prob = $primitives["style"] / $expression_count;
+	$resultTerm->style_categorical_prob = $categories["style"];
+	$resultTerm->style_primitive_prob = $primitives["style"];
 	$resultTerm->style_combined_prob = ($categories["style"] + $primitives["style"]) / 2;
-	$resultTerm->movement_categorical_prob = $categories["movement"] / $expression_count;
-	$resultTerm->movement_primitive_prob = $primitives["movement"] / $expression_count;
+	$resultTerm->movement_categorical_prob = $categories["movement"];
+	$resultTerm->movement_primitive_prob = $primitives["movement"];
 	$resultTerm->movement_combined_prob = ($categories["movement"] + $primitives["movement"]) / 2;
-	$resultTerm->proces_categorical_prob = $categories["proces"] / $expression_count;
-	$resultTerm->proces_primitive_prob = $primitives["proces"] / $expression_count;
+	$resultTerm->proces_categorical_prob = $categories["proces"];
+	$resultTerm->proces_primitive_prob = $primitives["proces"];
 	$resultTerm->proces_combined_prob = ($categories["proces"] + $primitives["proces"]) / 2;
-	$resultTerm->method_categorical_prob = $categories["method"] / $expression_count;
-	$resultTerm->method_primitive_prob = $primitives["method"] / $expression_count;
+	$resultTerm->method_categorical_prob = $categories["method"];
+	$resultTerm->method_primitive_prob = $primitives["method"];
 	$resultTerm->method_combined_prob = ($categories["method"] + $primitives["method"]) / 2;
-	$resultTerm->technique_categorical_prob = $categories["technique"] / $expression_count;
-	$resultTerm->technique_primitive_prob = $primitives["technique"] / $expression_count;
+	$resultTerm->technique_categorical_prob = $categories["technique"];
+	$resultTerm->technique_primitive_prob = $primitives["technique"];
 	$resultTerm->technique_combined_prob = ($categories["technique"] + $primitives["technique"]) / 2;
-	$resultTerm->material_categorical_prob = $categories["material"] / $expression_count;
-	$resultTerm->material_primitive_prob = $primitives["material"] / $expression_count;
+	$resultTerm->material_categorical_prob = $categories["material"];
+	$resultTerm->material_primitive_prob = $primitives["material"];
 	$resultTerm->material_combined_prob = ($categories["material"] + $primitives["material"]) / 2;
-	$resultTerm->result_categorical_prob = $categories["result"] / $expression_count;
-	$resultTerm->result_primitive_prob = $primitives["result"] / $expression_count;
+	$resultTerm->result_categorical_prob = $categories["result"];
+	$resultTerm->result_primitive_prob = $primitives["result"];
 	$resultTerm->result_combined_prob = ($categories["result"] + $primitives["result"]) / 2;
-	$resultTerm->company_categorical_prob = $categories["company"] / $expression_count;
-	$resultTerm->company_primitive_prob = $primitives["company"] / $expression_count;
+	$resultTerm->company_categorical_prob = $categories["company"];
+	$resultTerm->company_primitive_prob = $primitives["company"];
 	$resultTerm->company_combined_prob = ($categories["company"] + $primitives["company"]) / 2;
-	$resultTerm->function_categorical_prob = $categories["function"] / $expression_count;
-	$resultTerm->function_primitive_prob = $primitives["function"] / $expression_count;
+	$resultTerm->function_categorical_prob = $categories["function"];
+	$resultTerm->function_primitive_prob = $primitives["function"];
 	$resultTerm->function_combined_prob = ($categories["function"] + $primitives["function"]) / 2;
-	$resultTerm->exposure_categorical_prob = $categories["exposure"] / $expression_count;
-	$resultTerm->exposure_primitive_prob = $primitives["exposure"] / $expression_count;
+	$resultTerm->exposure_categorical_prob = $categories["exposure"];
+	$resultTerm->exposure_primitive_prob = $primitives["exposure"];
 	$resultTerm->exposure_combined_prob = ($categories["exposure"] + $primitives["exposure"]) / 2;
-	$resultTerm->subject_categorical_prob = $categories["subject"] / $expression_count;
-	$resultTerm->subject_primitive_prob = $primitives["subject"] / $expression_count;
+	$resultTerm->subject_categorical_prob = $categories["subject"];
+	$resultTerm->subject_primitive_prob = $primitives["subject"];
 	$resultTerm->subject_combined_prob = ($categories["subject"] + $primitives["subject"]) / 2;
 
 	return $resultTerm;
