@@ -125,7 +125,7 @@ echo $cql."<br>";
 
 	}
 
-	exit();
+	//exit();
 	//End of 10
 
 }
