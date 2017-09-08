@@ -12,6 +12,8 @@ use Facebook\WebDriver;
 use Facebook\WebDriver\Remote\DesiredCapabilities;
 use Facebook\WebDriver\Remote\RemoteWebDriver;
 use GraphAware\Neo4j\Client\ClientBuilder;
+use \GraphAware\Neo4j\Client\HttpDriver;
+use \Http\Adapter\Guzzle6;
 //Selenium server url
 $host = 'http://localhost:4444/wd/hub';
 $desired_capabilities = DesiredCapabilities::firefox();
@@ -20,9 +22,10 @@ $driver = RemoteWebDriver::create($host, $desired_capabilities);
 //Activate LaMachine virtual env
 shell_exec('. '.$lamachine_path.'/lamachine/bin/activate');
 
-
+$httpClient = \Http\Adapter\Guzzle6\Client::createWithConfig(['timeout'=>0]);
+$config = \GraphAware\Neo4j\Client\HttpDriver\Configuration::create($httpClient);
 $neo4j = ClientBuilder::create()
-    ->addConnection('default', $neo4j_default_connection) // HTTP connection config (port is optional)
+    ->addConnection('default', $neo4j_default_connection, $config) // HTTP connection config (port is optional)
     ->addConnection('bolt', $neo4j_bolt_connection) // BOLT connection config (port is optional)
     ->build();
 
