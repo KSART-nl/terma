@@ -129,8 +129,8 @@ function get_woordenlijst_html($term, $driver) {
 	//Facebook\WebDriver
 	$target_url = "http://woordenlijst.org/#/?q=".urlencode($term);
 	$driver->get($target_url);
-	$driver->wait(0, 10);
-	$driver->manage()->timeouts()->implicitlyWait(10);
+	$driver->wait(0, 20);
+	$driver->manage()->timeouts()->implicitlyWait(20);
 	$html = "";
 
 	try {
