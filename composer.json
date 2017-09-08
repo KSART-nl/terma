@@ -16,8 +16,7 @@
     },
     "autoload": {
     "classmap": [
-      "models",
-      "jobs"
+      "models"
     ]
   },
   "scripts": {
