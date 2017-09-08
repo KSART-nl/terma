@@ -134,7 +134,7 @@ function get_woordenlijst_html($term, $driver) {
 	$html = "";
 
 	try {
-		$element = $driver->findElement(WebDriverBy::cssSelector('.main-container'));
+		$element = $driver->findElement(Facebook\WebDriver\WebDriverBy::cssSelector('.main-container'));
 		$html = $element->getAttribute('innerHTML');
 	} catch (Exception\NoSuchElementException $e) {
 		echo "Element not found exception for: ".$target_url."\n";
