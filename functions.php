@@ -2,7 +2,7 @@
 function postag($term, $lamachine_path) {
 	$tags = [];
 
-	$term_file_name = str_replace(" ", "_", $term);
+	$term_file_name = str_replace([" ", "/"], "_", $term);
 	file_put_contents("frogs/".$term_file_name.".txt", $term);
 	$frog_term_file = $lamachine_path."/lamachine/bin/frog -t frogs/".$term_file_name.".txt -X frogs/".$term_file_name.".xml";
 	shell_exec($frog_term_file);
