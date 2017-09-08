@@ -60,25 +60,25 @@ function classify_categorically($parent_string, $expressions) {
 function classify_primitively($label, $expressions) {
 	$primitives = array_fill_keys($expressions, 0);
 	//Do singular matching
-	if(preg_match("~^(.*)ism(e)?$~", $label)) $primitives["movement"] += 1; // 1 / 1.833333
-	if(preg_match("~^(.*)istisch(e)?$~", $label)) $primitives["style"] += 1; // 1 / 1.833333
-	if(preg_match("~^(.*)ing$~", $label)) $primitives["technique"] += 1; // 1 / 1.833333
-	if(preg_match("~(.*)( )?kunst$~", $label)) $primitives["discipline"] += 1; // 1 / 1.833333
-	if(preg_match("~(.*)ure(n)?$~", $label)) $primitives["technique"] += 1; // 1 / 1.833333
-	if(preg_match("~(.*)druk$~", $label)) $primitives["technique"] += 1; // 1 / 1.833333
-	if(preg_match("~(.*)erij$~", $label)) $primitives["company"] += 1; // 1 / 1.833333
-	if(preg_match("~(.*)(f|g)ie$~", $label)) $primitives["discipline"] += 1; // 1 / 1.833333
-	if(preg_match("~(.*)(loog|logen)$~", $label)) $primitives["function"] += 1; // 1 / 1.833333
-	if(preg_match("~(.*)(er|ers)$~", $label)) $primitives["function"] += 1; // 1 / 1.833333
+	if(preg_match("~^(.*)ism(e)?$~", $label)) $primitives["movement"] += (1 / 1.833333);
+	if(preg_match("~^(.*)istisch(e)?$~", $label)) $primitives["style"] += (1 / 1.833333);
+	if(preg_match("~^(.*)ing$~", $label)) $primitives["technique"] += (1 / 1.833333);
+	if(preg_match("~(.*)( )?kunst$~", $label)) $primitives["discipline"] += (1 / 1.833333);
+	if(preg_match("~(.*)ure(n)?$~", $label)) $primitives["technique"] += (1 / 1.833333);
+	if(preg_match("~(.*)druk$~", $label)) $primitives["technique"] += (1 / 1.833333);
+	if(preg_match("~(.*)erij$~", $label)) $primitives["company"] += (1 / 1.833333);
+	if(preg_match("~(.*)(f|g)ie$~", $label)) $primitives["discipline"] += (1 / 1.833333);
+	if(preg_match("~(.*)(loog|logen)$~", $label)) $primitives["function"] += (1 / 1.833333);
+	if(preg_match("~(.*)(er|ers)$~", $label)) $primitives["function"] += (1 / 1.833333);
 	//Do combinational matching
 	if(preg_match("~^(.*)en$~", $label)) {
-		$primitives["technique"] += 1; // 0.5 / 1.833333
-		$primitives["material"] += 1; // 0.5 / 1.833333
+		$primitives["technique"] += (0.5 / 1.833333);
+		$primitives["material"] += (0.5 / 1.833333);
 	}
 	if(preg_match("~(.*)(je|tje|pje|kje)$~", $label)) {
-		$primitives["result"] += 1; // 0.333 / 1.833333
-		$primitives["function"] += 1; // 0.333 / 1.833333
-		$primitives["material"] += 1; // 0.333 / 1.833333
+		$primitives["result"] += (0.3333 / 1.833333);
+		$primitives["function"] += (0.3333 / 1.833333);
+		$primitives["material"] += (0.3333 / 1.833333);
 	}
 
 	return $primitives;
