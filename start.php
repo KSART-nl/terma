@@ -74,7 +74,7 @@ if(!Capsule::schema("result_terms")->hasTable('wikis')) {
 		$table->text('page_text');
 
 		$table->timestamps();
-	}
+	});
 }
 // postags: term, tag_label, lemma, prob
 if(!Capsule::schema("result_terms")->hasTable('postags')) {
@@ -88,7 +88,7 @@ if(!Capsule::schema("result_terms")->hasTable('postags')) {
 		$table->text('prob');
 
 		$table->timestamps();
-	}
+	});
 }
 // flexions: term, original_html, source_url -> verbas, nominas, generas, adjectivas (unique_flexions)
 if(!Capsule::schema("result_terms")->hasTable('flexions')) {
@@ -100,7 +100,7 @@ if(!Capsule::schema("result_terms")->hasTable('flexions')) {
 		$table->text('source_url');
 
 		$table->timestamps();
-	}
+	});
 }
 
 if(!Capsule::schema("result_terms")->hasTable('adjectivas')) {
