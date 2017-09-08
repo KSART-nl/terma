@@ -1,6 +1,4 @@
 <?php
-namespace Facebook\WebDriver;
-
 function postag($term, $lamachine_path) {
 	$tags = [];
 
@@ -128,6 +126,7 @@ function classify_all($resultTerm, $categories, $primitives) {
 }
 
 function get_woordenlijst_html($term, $driver) {
+	//Facebook\WebDriver
 	$target_url = "http://woordenlijst.org/#/?q=".urlencode($term);
 	$driver->get($target_url);
 	$driver->wait(0, 10);
