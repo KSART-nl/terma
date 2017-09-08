@@ -82,10 +82,6 @@ echo $cql."<br>";
 			$resultTerm->save();
 
 			$tagged_words = postag($resultTerm->label, $lamachine_path);
-			$wikis = get_wiki_pages($resultTerm->label);
-			$woordenlijst_html = get_woordenlijst_html($resultTerm->label, $driver);
-			$woordenboek_html = get_woordenboek_html($resultTerm->label);
-
 			foreach ($tagged_words as $tagged_word_key => $tagged_word) {
 				$postag = new PosTag();
 				$postag->term = $resultTerm->label;
@@ -95,6 +91,8 @@ echo $cql."<br>";
 				$postag->prob = $tagged_word["prob"];
 				$postag->save();
 			}
+
+			$wikis = get_wiki_pages($resultTerm->label);
 			foreach ($wikis as $wiki_key => $wiki) {
 				$wikipage = new WikiPage();
 				$wikipage->term = $resultTerm->label;
@@ -104,12 +102,15 @@ echo $cql."<br>";
 				$wikipage->page_text = $wiki["page_text"];
 				$wikipage->save();
 			}
+
+			$woordenlijst_html = get_woordenlijst_html($resultTerm->label, $driver);
 			$flexion_woordenlijst = new Flexion();
 			$flexion_woordenlijst->term = $resultTerm->label;
 			$flexion_woordenlijst->original_html = $woordenlijst_html["original_html"];
 			$flexion_woordenlijst->source_url = $woordenlijst_html["source_url"];
 			$flexion_woordenlijst->save();
 
+			$woordenboek_html = get_woordenboek_html($resultTerm->label);
 			$flexion_woordenboek = new Flexion();
 			$flexion_woordenboek->term = $resultTerm->label;
 			$flexion_woordenboek->original_html = $woordenboek_html["original_html"];
