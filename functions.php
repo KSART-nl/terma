@@ -1,7 +1,5 @@
 <?php
-use Facebook\WebDriver;
-use Facebook\WebDriver\Remote\DesiredCapabilities;
-use Facebook\WebDriver\Remote\RemoteWebDriver;
+namespace Facebook\WebDriver;
 
 function postag($term, $lamachine_path) {
 	$tags = [];
