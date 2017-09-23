@@ -175,4 +175,30 @@ if(!Capsule::schema("result_terms")->hasTable('verbas')) {
 	});
 }
 
+if(!Capsule::schema("result_terms")->hasTable('kunstgehalts')) {
+	Capsule::schema("result_terms")->create("kunstgehalts", function($table) {
+		$table->increments('id');
+
+		$table->text('term');
+		$table->text('kunstcount');
+		$table->text('kunstgehalt');
+
+		$table->timestamps();
+	});
+}
+if(!Capsule::schema("result_terms")->hasTable('associations')) {
+	Capsule::schema("result_terms")->create("associations", function($table) {
+		$table->increments('id');
+
+		$table->text('start_term');
+		$table->text('end_term');
+		$table->text('containment');
+		$table->text('support');
+		$table->text('appearance');
+		$table->text('confidence');
+
+		$table->timestamps();
+	});
+}
+
 Model::reguard();

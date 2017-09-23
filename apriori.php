@@ -3,7 +3,7 @@
 #Helpfull links: http://stats.stackexchange.com/questions/16456/apriori-algorithm-in-plain-english
 
 set_time_limit(0);
-ini_set('memory_limit', '9000M');
+ini_set('memory_limit', '-1');
 
 class Apriori
 {
@@ -67,7 +67,7 @@ class Apriori
     public static function get_stopwords()
     {
         //Read stop words from File
-        $ds = file_get_contents("unrelevant_words.txt");
+        $ds = file_get_contents("stopwords/all.txt");
         //Split by new Line
         return preg_split('~\r\n|\r|\n~', $ds);
     }
